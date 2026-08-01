@@ -1,3 +1,4 @@
+
 import streamlit as st
 
 from app.components.sidebar import render_sidebar
