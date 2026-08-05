@@ -2,6 +2,7 @@ import streamlit as st
 
 from services.pdf.upload_service import UploadService
 from services.pdf.parser_service import ParserService
+from services.rag.chunk_service import ChunkService
 
 
 def render():
@@ -22,6 +23,7 @@ def render():
 
     upload_service = UploadService()
     parser_service = ParserService()
+    chunk_service = ChunkService()
 
     try:
         with st.spinner("Uploading and parsing PDF..."):
@@ -30,9 +32,13 @@ def render():
 
             document = parser_service.parse(file_info["filepath"])
 
+            chunks = chunk_service.split(document)
+
         st.success("PDF uploaded and parsed successfully!")
 
-        col1, col2 = st.columns(2)
+        # Document Metrics
+     
+        col1, col2, col3 = st.columns(3)
 
         with col1:
             st.metric("File Name", file_info["original_filename"])
@@ -40,21 +46,45 @@ def render():
         with col2:
             st.metric("Pages", document.page_count)
 
-        st.metric(
-            "Characters Extracted",
-            f"{len(document.text):,}",
-        )
+        with col3:
+            st.metric("Chunks", len(chunks))
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.metric(
+                "Characters Extracted",
+                f"{len(document.text):,}",
+            )
+
+        with col2:
+            average_chunk_size = (
+                sum(len(chunk.content) for chunk in chunks) // len(chunks)
+                if chunks
+                else 0
+            )
+
+            st.metric(
+                "Average Chunk Size",
+                f"{average_chunk_size:,} chars",
+            )
+
+        # Document Metadata
+
+        st.divider()
+
+        st.subheader("📋 Document Metadata")
 
         if document.metadata:
-            st.subheader("📋 Document Metadata")
             st.json(document.metadata)
         else:
-            st.subheader("📋 Document Metadata")
             st.info("No metadata found in this PDF.")
 
-        st.json(document.metadata)
+        # Text Preview
 
-        st.subheader("Text Preview")
+        st.divider()
+
+        st.subheader("📄 Text Preview")
 
         preview = document.text[:2000]
 
@@ -66,6 +96,54 @@ def render():
 
         if len(document.text) > 2000:
             st.caption("Showing the first 2,000 characters.")
+
+        # Chunk Inspector
+
+        st.divider()
+
+        st.subheader("🔍 Chunk Inspector")
+
+        for chunk in chunks:
+            with st.expander(
+                f"Chunk {chunk.chunk_id} • {len(chunk.content):,} characters"
+            ):
+                col1, col2 = st.columns(2)
+
+                with col1:
+                    st.caption(f"Start Index: {chunk.start_index:,}")
+
+                with col2:
+                    st.caption(f"End Index: {chunk.end_index:,}")
+
+                st.text(chunk.content)
+
+        # Chunk Statistics
+
+        st.divider()
+
+        st.subheader("📊 Chunk Statistics")
+
+        chunk_sizes = [len(chunk.content) for chunk in chunks]
+
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.metric(
+                "Smallest Chunk",
+                f"{min(chunk_sizes):,} chars",
+            )
+
+        with col2:
+            st.metric(
+                "Largest Chunk",
+                f"{max(chunk_sizes):,} chars",
+            )
+
+        with col3:
+            st.metric(
+                "Total Chunks",
+                len(chunks),
+            )
 
     except Exception as e:
         st.error(str(e))

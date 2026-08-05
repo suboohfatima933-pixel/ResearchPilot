@@ -22,3 +22,28 @@
 - Extract text
 - Extract metadata
 - Preview extracted content
+
+### 📄 Research Discovery
+
+- Search research papers from arXiv
+- View paper metadata
+- Browse abstracts
+- Explore research topics
+
+### 📑 Document Processing
+
+- Secure PDF upload
+- Automatic PDF validation
+- PDF parsing using PyMuPDF
+- Metadata extraction
+- Text extraction
+- Character statistics
+
+### ✂️ Intelligent Chunking
+
+- Recursive Character Text Splitter
+- Configurable chunk size
+- Chunk overlap
+- Chunk Inspector
+- Chunk Statistics
+- Average chunk size
