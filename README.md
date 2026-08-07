@@ -47,3 +47,11 @@
 - Chunk Inspector
 - Chunk Statistics
 - Average chunk size
+
+### 🧠 Semantic Embeddings
+
+- BAAI/bge-small-en-v1.5
+- Sentence Transformers
+- Normalized embeddings
+- Embedding metrics
+- Vector dimension reporting

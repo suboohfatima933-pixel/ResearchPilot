@@ -1,5 +1,6 @@
 import streamlit as st
 
+from services.rag.embedding_service import EmbeddingService
 from services.pdf.upload_service import UploadService
 from services.pdf.parser_service import ParserService
 from services.rag.chunk_service import ChunkService
@@ -24,9 +25,10 @@ def render():
     upload_service = UploadService()
     parser_service = ParserService()
     chunk_service = ChunkService()
+    embedding_service = EmbeddingService()
 
     try:
-        with st.spinner("Uploading and parsing PDF..."):
+        with st.spinner("Uploading and analyzing PDF..."):
 
             file_info = upload_service.save(uploaded_file)
 
@@ -34,7 +36,9 @@ def render():
 
             chunks = chunk_service.split(document)
 
-        st.success("PDF uploaded and parsed successfully!")
+            embeddings = embedding_service.embed(chunks)
+
+        st.success("PDF processed successfully!")
 
         # Document Metrics
      
@@ -49,7 +53,7 @@ def render():
         with col3:
             st.metric("Chunks", len(chunks))
 
-        col1, col2 = st.columns(2)
+        col1, col2, col3 = st.columns(3)
 
         with col1:
             st.metric(
@@ -62,11 +66,17 @@ def render():
                 sum(len(chunk.content) for chunk in chunks) // len(chunks)
                 if chunks
                 else 0
-            )
+            )      
 
             st.metric(
                 "Average Chunk Size",
                 f"{average_chunk_size:,} chars",
+            )
+
+        with col3:
+            st.metric(
+                "Embeddings",
+                len(embeddings),
             )
 
         # Document Metadata
@@ -125,25 +135,53 @@ def render():
 
         chunk_sizes = [len(chunk.content) for chunk in chunks]
 
-        col1, col2, col3 = st.columns(3)
+        if chunk_sizes:
 
-        with col1:
-            st.metric(
-                "Smallest Chunk",
-                f"{min(chunk_sizes):,} chars",
-            )
+            col1, col2, col3 = st.columns(3)
 
-        with col2:
-            st.metric(
-                "Largest Chunk",
-                f"{max(chunk_sizes):,} chars",
-            )
+            with col1:
+                st.metric(
+                    "Smallest Chunk",
+                    f"{min(chunk_sizes):,} chars",
+                )
 
-        with col3:
-            st.metric(
-                "Total Chunks",
-                len(chunks),
-            )
+            with col2:
+                st.metric(
+                    "Largest Chunk",
+                    f"{max(chunk_sizes):,} chars",
+                )
+
+            with col3:
+                st.metric(
+                    "Total Chunks",
+                    len(chunks),
+                )
+        else:
+
+            st.info("No chunks generated.")
+
+        #Embedding Information
+
+        st.divider()
+
+        st.subheader("🧠 Embedding Information")
+
+        if embeddings:
+
+            col1, col2 = st.columns(2)
+
+            with col1:
+                st.metric(
+                    "Embedding Model",
+                    embeddings[0].model_name,
+                )
+
+            with col2:
+                st.metric(
+                    "Vector Dimensions",
+                    embeddings[0].dimensions,
+                )          
 
     except Exception as e:
         st.error(str(e))
+
