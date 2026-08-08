@@ -63,3 +63,11 @@
 - Metadata persistence
 - Vector Store dashboard
 - Index validation
+
+### 🔎 Semantic Retrieval
+
+- Query embeddings
+- FAISS similarity search
+- Similarity threshold filtering
+- Semantic search UI
+- Top-K retrieval

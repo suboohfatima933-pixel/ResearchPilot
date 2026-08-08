@@ -5,6 +5,7 @@ from services.pdf.upload_service import UploadService
 from services.pdf.parser_service import ParserService
 from services.rag.chunk_service import ChunkService
 from services.rag.vector_store_service import VectorStoreService
+from app.components.retrieval_search import render as render_retrieval_search
 
 
 def render():
@@ -209,7 +210,46 @@ def render():
                 "Stored Vectors",
                 vector_store_service.total_vectors,
             )
-            
+
+
+        query, search_clicked = render_retrieval_search()
+
+        if search_clicked:
+
+            if not query.strip():
+                st.warning("Please enter a question.")
+                return
+
+            with st.spinner("Searching document..."):
+                query_embedding = embedding_service.embed_query(query)
+
+                results = vector_store_service.search(
+                    query_embedding,
+                    top_k=5,
+                    min_score=0.60,
+                )
+
+            st.divider()
+
+            st.subheader("📚 Search Results")
+
+            if not results:
+                st.info(
+                    "No relevant content was found for your question. "
+                    "Try rephrasing your query or ask about a topic covered in the uploaded paper."
+                )
+            else:
+
+                for result in results:
+
+                    with st.expander(
+                        f"Chunk {result.chunk_id} • {result.similarity_score * 100:.1f}% Match"
+                    ):                   
+
+                        st.caption(result.document_name)
+
+                        st.text(result.content)            
+                    
 
     except Exception as e:
         st.error(str(e))

@@ -36,6 +36,7 @@ class EmbeddingService:
                     document_name=chunk.document_name,
                     start_index=chunk.start_index,
                     end_index=chunk.end_index,
+                    content=chunk.content,
                     model_name=self.MODEL_NAME,
                     dimensions=len(vector),
                     vector=vector.tolist(),
@@ -43,3 +44,19 @@ class EmbeddingService:
             )
             
         return embeddings
+
+    def embed_query(self, query: str) -> list[float]:
+        """Generate an embedding for a user query."""
+
+        query = (
+            "Represent this sentence for searching relevant passages: "
+            + query
+        )
+
+        vector = self.model.encode(
+            query,
+            normalize_embeddings=True,
+            show_progress_bar=False,
+        )
+
+        return vector.tolist()

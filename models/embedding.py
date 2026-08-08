@@ -12,6 +12,8 @@ class Embedding(BaseModel):
 
     end_index: int
 
+    content: str
+
     model_name: str
 
     dimensions: int

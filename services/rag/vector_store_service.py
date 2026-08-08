@@ -6,6 +6,8 @@ import numpy as np
 
 from models.embedding import Embedding
 
+from models.search_result import SearchResult
+
 
 class VectorStoreService:
     """Manages the FAISS vector store."""
@@ -41,6 +43,7 @@ class VectorStoreService:
                 "document_name": embedding.document_name,
                 "start_index": embedding.start_index,
                 "end_index": embedding.end_index,
+                "content": embedding.content,
             }
             for embedding in embeddings
         ]
@@ -76,6 +79,51 @@ class VectorStoreService:
         with open(self.METADATA_FILE, "r", encoding="utf-8") as file:
             self.metadata = json.load(file)
 
+    def search(
+        self,
+        query_embedding: list[float],
+        top_k: int = 5,
+        min_score: float = 0.60,
+    ) -> list[SearchResult]:
+        """Search the vector store for similar embeddings."""
+
+        if self.index is None:
+            raise ValueError("Vector store has not been loaded.")
+
+        query_vector = np.array(
+            [query_embedding],
+            dtype="float32",
+        )
+
+        scores, indices = self.index.search(
+            query_vector,
+            top_k,
+        )
+
+        results = []
+
+        for score, index in zip(scores[0], indices[0]):
+
+            if index == -1:
+                continue
+
+            if float(score) < min_score:
+                continue
+
+            metadata = self.metadata[index]
+
+            results.append(
+                SearchResult(
+                    chunk_id=metadata["chunk_id"],
+                    document_name=metadata["document_name"],
+                    similarity_score=float(score),
+                    start_index=metadata["start_index"],
+                    end_index=metadata["end_index"],
+                    content=metadata["content"],
+                )
+            )
+        
+        return results
     
     @property
     def total_vectors(self) -> int:
