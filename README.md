@@ -55,3 +55,11 @@
 - Normalized embeddings
 - Embedding metrics
 - Vector dimension reporting
+
+### 🗄️ Vector Store
+
+- FAISS IndexFlatIP
+- Persistent vector index
+- Metadata persistence
+- Vector Store dashboard
+- Index validation

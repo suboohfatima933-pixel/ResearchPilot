@@ -8,6 +8,10 @@ class Embedding(BaseModel):
 
     document_name: str
 
+    start_index: int
+
+    end_index: int
+
     model_name: str
 
     dimensions: int

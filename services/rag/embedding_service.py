@@ -34,10 +34,12 @@ class EmbeddingService:
                 Embedding(
                     chunk_id=chunk.chunk_id,
                     document_name=chunk.document_name,
+                    start_index=chunk.start_index,
+                    end_index=chunk.end_index,
                     model_name=self.MODEL_NAME,
                     dimensions=len(vector),
                     vector=vector.tolist(),
                 )
             )
-
+            
         return embeddings

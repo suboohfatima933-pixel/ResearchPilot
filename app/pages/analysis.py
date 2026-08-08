@@ -4,6 +4,7 @@ from services.rag.embedding_service import EmbeddingService
 from services.pdf.upload_service import UploadService
 from services.pdf.parser_service import ParserService
 from services.rag.chunk_service import ChunkService
+from services.rag.vector_store_service import VectorStoreService
 
 
 def render():
@@ -26,6 +27,7 @@ def render():
     parser_service = ParserService()
     chunk_service = ChunkService()
     embedding_service = EmbeddingService()
+    vector_store_service = VectorStoreService()
 
     try:
         with st.spinner("Uploading and analyzing PDF..."):
@@ -37,6 +39,12 @@ def render():
             chunks = chunk_service.split(document)
 
             embeddings = embedding_service.embed(chunks)
+
+            vector_store_service.create(embeddings)
+
+            vector_store_service.save()
+
+            vector_store_service.load()            
 
         st.success("PDF processed successfully!")
 
@@ -180,7 +188,28 @@ def render():
                 st.metric(
                     "Vector Dimensions",
                     embeddings[0].dimensions,
-                )          
+                )         
+
+        #Vector Store Information        
+
+        st.divider()
+
+        st.subheader("🗄️ Vector Store")
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.metric(
+                "Backend",
+                f"FAISS ({type(vector_store_service.index).__name__})",
+            )
+
+        with col2:
+            st.metric(
+                "Stored Vectors",
+                vector_store_service.total_vectors,
+            )
+            
 
     except Exception as e:
         st.error(str(e))
