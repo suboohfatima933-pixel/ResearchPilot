@@ -71,3 +71,14 @@
 - Similarity threshold filtering
 - Semantic search UI
 - Top-K retrieval
+
+### 🧠 Basic RAG
+
+- Retrieval-Augmented Generation
+- Ollama LLM integration
+- gpt-oss:120b-cloud
+- Grounded document answers
+- Semantic retrieval
+- Similarity threshold filtering
+- Source chunk display
+- Environment-based model configuration

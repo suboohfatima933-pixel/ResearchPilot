@@ -6,6 +6,7 @@ from services.pdf.parser_service import ParserService
 from services.rag.chunk_service import ChunkService
 from services.rag.vector_store_service import VectorStoreService
 from app.components.retrieval_search import render as render_retrieval_search
+from services.rag.rag_service import RAGService
 
 
 def render():
@@ -29,6 +30,7 @@ def render():
     chunk_service = ChunkService()
     embedding_service = EmbeddingService()
     vector_store_service = VectorStoreService()
+    rag_service = RAGService()
 
     try:
         with st.spinner("Uploading and analyzing PDF..."):
@@ -249,7 +251,53 @@ def render():
                         st.caption(result.document_name)
 
                         st.text(result.content)            
-                    
+
+        #LLM
+
+        st.divider()
+
+        st.subheader("🧠 RAG Answer")
+
+        with st.form("rag_answer_form"):
+
+            question = st.text_input(
+                "Ask the AI about this paper",
+                placeholder="e.g. What is LangChain?",
+            )
+
+            answer_clicked = st.form_submit_button(
+                "Ask AI",
+                use_container_width=True,
+            )
+
+        if answer_clicked:
+
+            if not question.strip():
+                st.warning("Please enter a question.")
+                return
+
+            with st.spinner("Generating answer..."):
+
+                result = rag_service.answer(question)
+
+            st.markdown("### Answer")
+
+            st.write(result["answer"])
+
+            if result["sources"]:
+
+                st.markdown("### Sources")
+
+                for source in result["sources"]:
+
+                    with st.expander(
+                        f"Chunk {source.chunk_id} • "
+                        f"{source.similarity_score * 100:.1f}% Match"
+                    ):
+
+                        st.caption(source.document_name)
+
+                        st.text(source.content)                    
 
     except Exception as e:
         st.error(str(e))
