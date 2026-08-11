@@ -37,32 +37,50 @@ def render():
 
             file_info = upload_service.save(uploaded_file)
 
-            document = parser_service.parse(file_info["filepath"])
+            document = parser_service.parse(
+                file_info["filepath"]
+            )
 
             chunks = chunk_service.split(document)
 
             embeddings = embedding_service.embed(chunks)
 
-            vector_store_service.create(embeddings)
+            vector_store_service.create(
+                embeddings,
+                file_info["document_id"],
+            )
 
-            vector_store_service.save()
+            vector_store_service.save(
+                file_info["document_id"],
+            )
 
-            vector_store_service.load()            
+            vector_store_service.load(
+                file_info["document_id"],
+            )
 
         st.success("PDF processed successfully!")
 
         # Document Metrics
-     
+
         col1, col2, col3 = st.columns(3)
 
         with col1:
-            st.metric("File Name", file_info["original_filename"])
+            st.metric(
+                "File Name",
+                file_info["original_filename"],
+            )
 
         with col2:
-            st.metric("Pages", document.page_count)
+            st.metric(
+                "Pages",
+                document.page_count,
+            )
 
         with col3:
-            st.metric("Chunks", len(chunks))
+            st.metric(
+                "Chunks",
+                len(chunks),
+            )
 
         col1, col2, col3 = st.columns(3)
 
@@ -77,7 +95,7 @@ def render():
                 sum(len(chunk.content) for chunk in chunks) // len(chunks)
                 if chunks
                 else 0
-            )      
+            )
 
             st.metric(
                 "Average Chunk Size",
@@ -126,15 +144,20 @@ def render():
 
         for chunk in chunks:
             with st.expander(
-                f"Chunk {chunk.chunk_id} • {len(chunk.content):,} characters"
+                f"Chunk {chunk.chunk_id} • "
+                f"{len(chunk.content):,} characters"
             ):
                 col1, col2 = st.columns(2)
 
                 with col1:
-                    st.caption(f"Start Index: {chunk.start_index:,}")
+                    st.caption(
+                        f"Start Index: {chunk.start_index:,}"
+                    )
 
                 with col2:
-                    st.caption(f"End Index: {chunk.end_index:,}")
+                    st.caption(
+                        f"End Index: {chunk.end_index:,}"
+                    )
 
                 st.text(chunk.content)
 
@@ -144,7 +167,10 @@ def render():
 
         st.subheader("📊 Chunk Statistics")
 
-        chunk_sizes = [len(chunk.content) for chunk in chunks]
+        chunk_sizes = [
+            len(chunk.content)
+            for chunk in chunks
+        ]
 
         if chunk_sizes:
 
@@ -167,11 +193,11 @@ def render():
                     "Total Chunks",
                     len(chunks),
                 )
-        else:
 
+        else:
             st.info("No chunks generated.")
 
-        #Embedding Information
+        # Embedding Information
 
         st.divider()
 
@@ -191,9 +217,9 @@ def render():
                 st.metric(
                     "Vector Dimensions",
                     embeddings[0].dimensions,
-                )         
+                )
 
-        #Vector Store Information        
+        # Vector Store Information
 
         st.divider()
 
@@ -213,6 +239,7 @@ def render():
                 vector_store_service.total_vectors,
             )
 
+        # Semantic Search
 
         query, search_clicked = render_retrieval_search()
 
@@ -223,10 +250,14 @@ def render():
                 return
 
             with st.spinner("Searching document..."):
-                query_embedding = embedding_service.embed_query(query)
+
+                query_embedding = embedding_service.embed_query(
+                    query
+                )
 
                 results = vector_store_service.search(
                     query_embedding,
+                    file_info["document_id"],
                     top_k=5,
                     min_score=0.60,
                 )
@@ -238,21 +269,27 @@ def render():
             if not results:
                 st.info(
                     "No relevant content was found for your question. "
-                    "Try rephrasing your query or ask about a topic covered in the uploaded paper."
+                    "Try rephrasing your query or ask about a topic "
+                    "covered in the uploaded paper."
                 )
+
             else:
 
                 for result in results:
 
                     with st.expander(
-                        f"Chunk {result.chunk_id} • {result.similarity_score * 100:.1f}% Match"
-                    ):                   
+                        f"Chunk {result.chunk_id} • "
+                        f"{result.similarity_score * 100:.1f}% Match"
+                    ):
+                        st.caption(
+                            result.document_name
+                        )
 
-                        st.caption(result.document_name)
+                        st.text(
+                            result.content
+                        )
 
-                        st.text(result.content)            
-
-        #LLM
+        # RAG Answer
 
         st.divider()
 
@@ -278,7 +315,10 @@ def render():
 
             with st.spinner("Generating answer..."):
 
-                result = rag_service.answer(question)
+                result = rag_service.answer(
+                    question,
+                    file_info["document_id"],
+                )
 
             st.markdown("### Answer")
 
@@ -295,10 +335,13 @@ def render():
                         f"{source.similarity_score * 100:.1f}% Match"
                     ):
 
-                        st.caption(source.document_name)
+                        st.caption(
+                            source.document_name
+                        )
 
-                        st.text(source.content)                    
+                        st.text(
+                            source.content
+                        )
 
     except Exception as e:
         st.error(str(e))
-

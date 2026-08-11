@@ -11,20 +11,33 @@ class RAGService:
         self.vector_store_service = VectorStoreService()
         self.llm_service = LLMService()
 
-    def answer(self, query: str) -> dict:
-        """Generate a grounded answer using retrieved document context."""
+    def answer(
+        self,
+        query: str,
+        document_id: str,
+    ) -> dict:
+        """Generate a grounded answer using a specific document."""
 
         if not query.strip():
             raise ValueError("Query cannot be empty.")
 
+        if not document_id:
+            raise ValueError("Document ID is required.")
+
         # Generate query embedding
-        query_embedding = self.embedding_service.embed_query(query)
+        query_embedding = self.embedding_service.embed_query(
+            query
+        )
 
-        # Retrieve relevant chunks
-        self.vector_store_service.load()
+        # Load the vector store for this specific document
+        self.vector_store_service.load(
+            document_id
+        )
 
+        # Retrieve relevant chunks from this document only
         results = self.vector_store_service.search(
             query_embedding,
+            document_id,
             top_k=5,
             min_score=0.60,
         )

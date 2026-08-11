@@ -2,6 +2,7 @@ from pathlib import Path
 from datetime import datetime
 import re
 import shutil
+import uuid
 
 
 class UploadService:
@@ -25,6 +26,13 @@ class UploadService:
         if uploaded_file.size > self.MAX_FILE_SIZE:
             raise ValueError("Maximum file size is 25 MB.")
 
+        # Generate a unique document ID
+        document_id = str(uuid.uuid4())
+
+        # Create a dedicated directory for this document
+        document_dir = self.UPLOAD_DIR / document_id
+        document_dir.mkdir(parents=True, exist_ok=True)
+
         # Generate a unique, human-readable filename
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
@@ -36,12 +44,13 @@ class UploadService:
 
         unique_filename = f"{timestamp}_{sanitized_filename}"
 
-        destination = self.UPLOAD_DIR / unique_filename
+        destination = document_dir / unique_filename
 
         with open(destination, "wb") as f:
             shutil.copyfileobj(uploaded_file, f)
 
         return {
+            "document_id": document_id,
             "filename": unique_filename,
             "original_filename": uploaded_file.name,
             "filepath": str(destination),

@@ -82,3 +82,17 @@
 - Similarity threshold filtering
 - Source chunk display
 - Environment-based model configuration
+
+### 🧠 Basic RAG
+
+- Retrieval-Augmented Generation
+- Ollama LLM integration
+- Centralized LLM configuration
+- `gpt-oss:120b-cloud`
+- Grounded document answers
+- Semantic retrieval
+- Similarity threshold filtering
+- Context-aware prompting
+- Source chunk display
+- RAGService orchestration
+- LLMService abstraction

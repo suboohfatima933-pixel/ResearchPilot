@@ -1,0 +1,154 @@
+[
+    {
+        "chunk_id": 1,
+        "document_id": "fae8041d-07c9-4d36-adda-ccc0f5cab45c",
+        "document_name": "20260811_220335_TransportLayer.pdf",
+        "start_index": 0,
+        "end_index": 969,
+        "content": "Chapter 3\nTransport Layer\nTransport Layer: 3-1\nTransport services and protocols\n\u25aaprovide logical communication \nbetween application processes \nrunning on different hosts\nmobile network\nhome network\nenterprise\n          network\nnational or global ISP\nlocal or \nregional ISP\ndatacenter \nnetwork\ncontent \nprovider \nnetwork\napplication\ntransport\nnetwork\ndata link\nphysical\napplication\ntransport\nnetwork\ndata link\nphysical\n\u25aatransport protocols actions in end \nsystems:\n\u2022 sender: breaks application messages \ninto segments, passes to  network layer\n\u2022 receiver: reassembles segments into \nmessages, passes to application layer\n\u25aatwo transport protocols available to \nInternet applications\n\u2022 TCP, UDP\nTransport Layer: 3-2\nTransport vs. network layer services and protocols\n\u25aanetwork layer: \ncommunication between \nhosts\nhousehold analogy:\n12 kids in Ann\u2019s house sending \nletters to 12 kids in Bill\u2019s \nhouse:\n\u25aahosts = houses\n\u25aaprocesses = kids\n\u25aaapp messages = letters in \nenvelopes"
+    },
+    {
+        "chunk_id": 2,
+        "document_id": "fae8041d-07c9-4d36-adda-ccc0f5cab45c",
+        "document_name": "20260811_220335_TransportLayer.pdf",
+        "start_index": 969,
+        "end_index": 1948,
+        "content": "communication between \nhosts\nhousehold analogy:\n12 kids in Ann\u2019s house sending \nletters to 12 kids in Bill\u2019s \nhouse:\n\u25aahosts = houses\n\u25aaprocesses = kids\n\u25aaapp messages = letters in \nenvelopes\n\u25aatransport protocol = Ann and Bill \nwho demux to in-house siblings\n\u25aanetwork-layer protocol = postal \nservice\nTransport Layer: 3-3\n\u25aatransport layer: \ncommunication between \nprocesses \n\u2022 relies on, enhances, network \nlayer services\nphysical\nlink\nnetwork (IP)\napplication\nphysical\nlink\nnetwork (IP)\napplication\ntransport\nTransport Layer Actions\nSender:\napp. msg\n\u25aais passed an application-\nlayer message\n\u25aadetermines segment \nheader fields values\n\u25aacreates segment\n\u25aapasses segment to IP\ntransport\nThTh\napp. msg\nTransport Layer: 3-4\nphysical\nlink\nnetwork (IP)\napplication\nphysical\nlink\nnetwork (IP)\napplication\ntransport\nTransport Layer Actions\ntransport\nReceiver:\napp.  msg\n\u25aaextracts application-layer \nmessage\n\u25aachecks header values\n\u25aareceives segment from IP\nTh\napp. msg\n\u25aademultiplexes message up"
+    },
+    {
+        "chunk_id": 3,
+        "document_id": "fae8041d-07c9-4d36-adda-ccc0f5cab45c",
+        "document_name": "20260811_220335_TransportLayer.pdf",
+        "start_index": 1948,
+        "end_index": 2937,
+        "content": "application\ntransport\nTransport Layer Actions\ntransport\nReceiver:\napp.  msg\n\u25aaextracts application-layer \nmessage\n\u25aachecks header values\n\u25aareceives segment from IP\nTh\napp. msg\n\u25aademultiplexes message up \nto application via socket\nTransport Layer: 3-5\nTwo principal Internet transport protocols\nmobile network\nhome network\nenterprise\n          network\nnational or global ISP\nlocal or \nregional ISP\ndatacenter \nnetwork\ncontent \nprovider \nnetwork\napplication\ntransport\nnetwork\ndata link\nphysical\napplication\ntransport\nnetwork\ndata link\nphysical\n\u25aaTCP: Transmission Control Protocol\n\u2022 reliable, in-order delivery\n\u2022 congestion control \n\u2022 flow control\n\u2022 connection setup\n\u25aaUDP: User Datagram Protocol\n\u2022 unreliable, unordered delivery\n\u2022 no-frills extension of \u201cbest-effort\u201d IP\n\u25aaservices not available: \n\u2022 delay guarantees\n\u2022 bandwidth guarantees\nTransport Layer: 3-6\nUDP: User Datagram Protocol\n\u25aa\u201cno frills,\u201d \u201cbare bones\u201d \nInternet transport protocol\n\u25aa\u201cbest effort\u201d service, UDP \nsegments may be:\n\u2022 lost"
+    },
+    {
+        "chunk_id": 4,
+        "document_id": "fae8041d-07c9-4d36-adda-ccc0f5cab45c",
+        "document_name": "20260811_220335_TransportLayer.pdf",
+        "start_index": 2937,
+        "end_index": 3873,
+        "content": "\u2022 delay guarantees\n\u2022 bandwidth guarantees\nTransport Layer: 3-6\nUDP: User Datagram Protocol\n\u25aa\u201cno frills,\u201d \u201cbare bones\u201d \nInternet transport protocol\n\u25aa\u201cbest effort\u201d service, UDP \nsegments may be:\n\u2022 lost\n\u2022 delivered out-of-order to app\n\u25aano connection \nestablishment (which can \nadd RTT delay)\n\u25aasimple: no connection state \nat sender, receiver\n\u25aasmall header size\n\u25aano congestion control\n\u25aaUDP can blast away as fast as \ndesired!\n\u25aacan function in the face of \ncongestion\nWhy is there a UDP?\n\u25aaconnectionless:\n\u2022 no handshaking between UDP \nsender, receiver\n\u2022 each UDP segment handled \nindependently of others\nTransport Layer: 3-7\nUDP: User Datagram Protocol\n\u25aaUDP use:\n\u25aastreaming multimedia apps (loss tolerant, rate sensitive)\n\u25aaDNS (The Domain Name System (DNS) is the phonebook of the Internet. )\n\u25aaSNMP (Simple Network Management Protocol (SNMP) is an internet standard \nprotocol used to monitor and manage network devices connected over an IP.)"
+    },
+    {
+        "chunk_id": 5,
+        "document_id": "fae8041d-07c9-4d36-adda-ccc0f5cab45c",
+        "document_name": "20260811_220335_TransportLayer.pdf",
+        "start_index": 3873,
+        "end_index": 4870,
+        "content": "\u25aaSNMP (Simple Network Management Protocol (SNMP) is an internet standard \nprotocol used to monitor and manage network devices connected over an IP.)\n\u25aaHTTP/3 (HTTP/3 is the next major revision of the hypertext transfer protocol \n(HTTP). )\n\u25aaif reliable transfer needed over UDP (e.g., HTTP/3): \n\u25aaadd needed reliability at application layer\n\u25aaadd congestion control at application layer\nTransport Layer: 3-8\nUDP: User Datagram Protocol [RFC 768]\nTransport Layer: 3-9\nUDP: User Datagram Protocol\nTransport Layer: 3-10\nSNMP server\nSNMP client\ntransport\n(UDP)\nphysical\nlink\nnetwork (IP)\napplication\nUDP: Transport Layer Actions\ntransport\n(UDP)\nphysical\nlink\nnetwork (IP)\napplication\nTransport Layer: 3-11\nSNMP server\nSNMP client\ntransport\n(UDP)\nphysical\nlink\nnetwork (IP)\napplication\ntransport\n(UDP)\nphysical\nlink\nnetwork (IP)\napplication\nUDP: Transport Layer Actions\nUDP sender actions:\nSNMP msg\n\u25aais passed an application-\nlayer message\n\u25aadetermines UDP segment \nheader fields values\n\u25aacreates UDP segment"
+    },
+    {
+        "chunk_id": 6,
+        "document_id": "fae8041d-07c9-4d36-adda-ccc0f5cab45c",
+        "document_name": "20260811_220335_TransportLayer.pdf",
+        "start_index": 4870,
+        "end_index": 5868,
+        "content": "link\nnetwork (IP)\napplication\nUDP: Transport Layer Actions\nUDP sender actions:\nSNMP msg\n\u25aais passed an application-\nlayer message\n\u25aadetermines UDP segment \nheader fields values\n\u25aacreates UDP segment\n\u25aapasses segment to IP\nUDPh\nUDPh SNMP msg\nTransport Layer: 3-12\nSNMP server\nSNMP client\ntransport\n(UDP)\nphysical\nlink\nnetwork (IP)\napplication\ntransport\n(UDP)\nphysical\nlink\nnetwork (IP)\napplication\nUDP: Transport Layer Actions\nUDP receiver actions:\nSNMP msg\n\u25aaextracts application-layer \nmessage\n\u25aachecks UDP checksum \nheader value\n\u25aareceives segment from IP\nUDPh SNMP msg\n\u25aademultiplexes message up \nto application via socket\nTransport Layer: 3-13\nUDP segment header\nsource port #\ndest port #\n32 bits\napplication\ndata \n(payload)\nUDP segment format\nlength\nchecksum\nlength, in bytes of \nUDP segment, \nincluding header\ndata to/from \napplication layer\nTransport Layer: 3-14\nUDP checksum\nTransmitted:            5               6                11\nGoal: detect errors (i.e., flipped bits) in transmitted segment"
+    },
+    {
+        "chunk_id": 7,
+        "document_id": "fae8041d-07c9-4d36-adda-ccc0f5cab45c",
+        "document_name": "20260811_220335_TransportLayer.pdf",
+        "start_index": 5868,
+        "end_index": 6852,
+        "content": "data to/from \napplication layer\nTransport Layer: 3-14\nUDP checksum\nTransmitted:            5               6                11\nGoal: detect errors (i.e., flipped bits) in transmitted segment\nReceived:            4               6                11\n1st number\n2nd number\nsum\nreceiver-computed \nchecksum\nsender-computed \nchecksum (as received)\n=\nTransport Layer: 3-15\nInternet checksum\nsender:\n\u25aatreat contents of UDP \nsegment (including UDP header \nfields and IP addresses) as \nsequence of 16-bit integers\n\u25aachecksum: addition (one\u2019s \ncomplement sum) of segment \ncontent\n\u25aachecksum value put into \nUDP checksum field\nreceiver:\n\u25aacompute checksum of received \nsegment\n\u25aacheck if computed checksum equals \nchecksum field value:\n\u2022 not equal - error detected\n\u2022 equal - no error detected. But maybe \nerrors nonetheless? More later \u2026.\nGoal: detect errors (i.e., flipped bits) in transmitted segment\nTransport Layer: 3-16\nInternet checksum: an example\nexample: add two 16-bit integers\nsum\nchecksum"
+    },
+    {
+        "chunk_id": 8,
+        "document_id": "fae8041d-07c9-4d36-adda-ccc0f5cab45c",
+        "document_name": "20260811_220335_TransportLayer.pdf",
+        "start_index": 6852,
+        "end_index": 7823,
+        "content": "errors nonetheless? More later \u2026.\nGoal: detect errors (i.e., flipped bits) in transmitted segment\nTransport Layer: 3-16\nInternet checksum: an example\nexample: add two 16-bit integers\nsum\nchecksum\nNote: when adding numbers, a carryout from the most significant bit needs to be \nadded to the result\n1 1 1 0 0 1 1 0 0 1 1 0 0 1 1 0\n1 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1\n1 1 0 1 1 1 0 1 1 1 0 1 1 1 0 1 1\nwraparound\n1 0 1 1 1 0 1 1 1 0 1 1 1 1 0 0\n0 1 0 0 0 1 0 0 0 1 0 0 0 0 1 1\nTransport Layer: 3-17\nInternet checksum: weak protection!\nexample: add two 16-bit integers\nsum\nchecksum\n1 1 1 0 0 1 1 0 0 1 1 0 0 1 1 0\n1 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1\n1 1 0 1 1 1 0 1 1 1 0 1 1 1 0 1 1\nwraparound\n1 0 1 1 1 0 1 1 1 0 1 1 1 1 0 0\n0 1 0 0 0 1 0 0 0 1 0 0 0 0 1 1\n0 1 \n1 0 \nEven though \nnumbers have \nchanged (bit \nflips), no change \nin checksum!\nTransport Layer: 3-18\nSelective repeat: sender, receiver windows\nTransport Layer: 3-19\nSelective repeat: sender and receiver\ndata from above:"
+    },
+    {
+        "chunk_id": 9,
+        "document_id": "fae8041d-07c9-4d36-adda-ccc0f5cab45c",
+        "document_name": "20260811_220335_TransportLayer.pdf",
+        "start_index": 7823,
+        "end_index": 8818,
+        "content": "changed (bit \nflips), no change \nin checksum!\nTransport Layer: 3-18\nSelective repeat: sender, receiver windows\nTransport Layer: 3-19\nSelective repeat: sender and receiver\ndata from above:\n\u25aaif next available seq # in \nwindow, send packet\ntimeout(n):\n\u25aaresend packet n, restart timer\nACK(n) in [sendbase,sendbase+N-1]:\n\u25aamark packet n as received\n\u25aaif n smallest unACKed packet, \nadvance window base to next \nunACKed seq # \nsender\npacket n in [rcvbase, rcvbase+N-1]\n\u25aasend ACK(n)\n\u25aaout-of-order: buffer\n\u25aain-order: deliver (also deliver \nbuffered, in-order packets), \nadvance window to next not-yet-\nreceived packet\npacket n in [rcvbase-N,rcvbase-1]\n\u25aaACK(n)\notherwise: \n\u25aaignore \nreceiver\nTransport Layer: 3-20\nSelective Repeat in action\nsend  pkt0\nsend  pkt1\nsend  pkt2\nsend  pkt3\n(wait)\nsender\nreceiver\nsend  pkt2\n(but not 3,4,5)\nXloss\npkt 2 timeout\nsender window (N=4)\n0 1 2 3 4 5 6 7 8 \n0 1 2 3 4 5 6 7 8 \n0 1 2 3 4 5 6 7 8 \n0 1 2 3 4 5 6 7 8 \nrcv ack0, send pkt4\n0 1 2 3 4 5 6 7 8 \n0 1 2 3 4 5 6 7 8"
+    },
+    {
+        "chunk_id": 10,
+        "document_id": "fae8041d-07c9-4d36-adda-ccc0f5cab45c",
+        "document_name": "20260811_220335_TransportLayer.pdf",
+        "start_index": 8818,
+        "end_index": 9805,
+        "content": "(but not 3,4,5)\nXloss\npkt 2 timeout\nsender window (N=4)\n0 1 2 3 4 5 6 7 8 \n0 1 2 3 4 5 6 7 8 \n0 1 2 3 4 5 6 7 8 \n0 1 2 3 4 5 6 7 8 \nrcv ack0, send pkt4\n0 1 2 3 4 5 6 7 8 \n0 1 2 3 4 5 6 7 8 \n0 1 2 3 4 5 6 7 8 \n0 1 2 3 4 5 6 7 8 \n0 1 2 3 4 5 6 7 8 \n0 1 2 3 4 5 6 7 8 \nrcv ack1, send pkt5\nreceive pkt0, send ack0\nreceive pkt1, send ack1\n \nreceive pkt3, buffer, \n           send ack3\nrecord ack3 arrived\nreceive pkt4, buffer, \n           send ack4\nreceive pkt5, buffer, \n           send ack5\nrcv pkt2; deliver pkt2,\npkt3, pkt4, pkt5; send ack2\nQ: what happens when ack2 arrives?\nTransport Layer: 3-21\nSelective repeat: \na dilemma!\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2\npkt0\npkt1\npkt2\n0 1 2 3 0 1 2\npkt0\ntimeout\nretransmit pkt0\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2\nX\nX\nX\nwill accept packet\nwith seq number 0\n(b) oops!\nreceiver window\n(after receipt)\nsender window\n(after receipt)\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2\npkt0\npkt1\npkt2\n0 1 2 3 0 1 2\npkt0\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2"
+    },
+    {
+        "chunk_id": 11,
+        "document_id": "fae8041d-07c9-4d36-adda-ccc0f5cab45c",
+        "document_name": "20260811_220335_TransportLayer.pdf",
+        "start_index": 9805,
+        "end_index": 10804,
+        "content": "with seq number 0\n(b) oops!\nreceiver window\n(after receipt)\nsender window\n(after receipt)\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2\npkt0\npkt1\npkt2\n0 1 2 3 0 1 2\npkt0\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2\nX\nwill accept packet\nwith seq number 0\n0 1 2 3 0 1 2\npkt3\n(a) no problem\nexample: \n\u25aaseq #s: 0, 1, 2, 3 (base 4 counting)\n\u25aawindow size=3\nTransport Layer: 3-22\nSelective repeat: \na dilemma!\nQ: what relationship is needed \nbetween sequence # size and \nwindow size to avoid problem \nin scenario (b)?\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2\npkt0\npkt1\npkt2\n0 1 2 3 0 1 2\npkt0\ntimeout\nretransmit pkt0\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2\nX\nX\nX\nwill accept packet\nwith seq number 0\n(b) oops!\nreceiver window\n(after receipt)\nsender window\n(after receipt)\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2\npkt0\npkt1\npkt2\n0 1 2 3 0 1 2\npkt0\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2\nX\nwill accept packet\nwith seq number 0\n0 1 2 3 0 1 2\npkt3\n(a) no problem\nexample: \n\u25aaseq #s: 0, 1, 2, 3 (base 4 counting)"
+    },
+    {
+        "chunk_id": 12,
+        "document_id": "fae8041d-07c9-4d36-adda-ccc0f5cab45c",
+        "document_name": "20260811_220335_TransportLayer.pdf",
+        "start_index": 10804,
+        "end_index": 11777,
+        "content": "pkt0\npkt1\npkt2\n0 1 2 3 0 1 2\npkt0\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2\n0 1 2 3 0 1 2\nX\nwill accept packet\nwith seq number 0\n0 1 2 3 0 1 2\npkt3\n(a) no problem\nexample: \n\u25aaseq #s: 0, 1, 2, 3 (base 4 counting)\n\u25aawindow size=3\n\u25aareceiver can\u2019t \nsee sender side\n\u25aareceiver \nbehavior \nidentical in both \ncases!\n\u25aasomething\u2019s \n(very) wrong!\nTransport Layer: 3-23\nTCP: overview  RFCs: 793,1122, 2018, 5681, 7323\n\u25aacumulative ACKs\n\u25aapipelining:\n\u2022 TCP congestion and flow control \nset window size\n\u25aaconnection-oriented: \n\u2022 handshaking (exchange of control \nmessages) initializes sender, \nreceiver state before data exchange\n\u25aaflow controlled:\n\u2022 sender will not overwhelm receiver\n\u25aapoint-to-point:\n\u2022 one sender, one receiver \n\u25aareliable, in-order byte \nsteam:\n\u2022 no \u201cmessage boundaries\"\n\u25aafull duplex data:\n\u2022 bi-directional data flow in \nsame connection\n\u2022 MSS: maximum segment size\nTransport Layer: 3-24\nTCP segment structure\nsource port #\ndest port #\n32 bits\nnot\nused\nreceive window\nflow control: # bytes"
+    },
+    {
+        "chunk_id": 13,
+        "document_id": "fae8041d-07c9-4d36-adda-ccc0f5cab45c",
+        "document_name": "20260811_220335_TransportLayer.pdf",
+        "start_index": 11777,
+        "end_index": 12772,
+        "content": "\u2022 bi-directional data flow in \nsame connection\n\u2022 MSS: maximum segment size\nTransport Layer: 3-24\nTCP segment structure\nsource port #\ndest port #\n32 bits\nnot\nused\nreceive window\nflow control: # bytes \nreceiver willing to accept\nsequence number\nsegment seq  #: counting \nbytes of data into bytestream \n(not segments!)\napplication\ndata \n(variable length)\ndata sent by \napplication into \nTCP socket\nA\nacknowledgement number\nACK: seq # of next expected \nbyte; A bit: this is an ACK\noptions (variable length)\nTCP options\nhead\nlen\nlength (of TCP header)\nchecksum\nInternet checksum\nRST, SYN, FIN: connection \nmanagement\nF\nS\nR\nUrg data pointer\nP\nU\nC E\nC, E: congestion notification\nTransport Layer: 3-25\nTCP sequence numbers, ACKs\nSequence numbers:\n\u2022 byte stream \u201cnumber\u201d of \nfirst byte in segment\u2019s data\nsource port #\ndest port #\nsequence number\nacknowledgement number\nchecksum\nrwnd\nurg pointer\noutgoing segment from receiver\nA\nsent \nACKed\nsent, not-\nyet ACKed\n(\u201cin-flight\u201d)\nusable\nbut not \nyet sent\nnot"
+    },
+    {
+        "chunk_id": 14,
+        "document_id": "fae8041d-07c9-4d36-adda-ccc0f5cab45c",
+        "document_name": "20260811_220335_TransportLayer.pdf",
+        "start_index": 12772,
+        "end_index": 13758,
+        "content": "dest port #\nsequence number\nacknowledgement number\nchecksum\nrwnd\nurg pointer\noutgoing segment from receiver\nA\nsent \nACKed\nsent, not-\nyet ACKed\n(\u201cin-flight\u201d)\nusable\nbut not \nyet sent\nnot \nusable\nwindow size\n N\nsender sequence number space \nsource port #\ndest port #\nsequence number\nacknowledgement number\nchecksum\nrwnd\nurg pointer\noutgoing segment from sender\nAcknowledgements:\n\u2022 seq # of next byte expected \nfrom other side\n\u2022 cumulative ACK\nQ: how receiver handles out-of-\norder segments\n\u2022 A: TCP spec doesn\u2019t say, - up \nto implementor\nTransport Layer: 3-26\nTCP sequence numbers, ACKs\nhost ACKs receipt \nof echoed \u2018C\u2019\nhost ACKs receipt \nof\u2018C\u2019, echoes back \u2018C\u2019\nsimple telnet scenario\nHost B\nHost A\nUser types\u2018C\u2019\nSeq=42, ACK=79, data = \u2018C\u2019\nSeq=79, ACK=43, data = \u2018C\u2019\nSeq=43, ACK=80\nTransport Layer: 3-27\nTCP round trip time, timeout\nQ: how to set TCP timeout \nvalue?\n\u25aalonger than RTT, but RTT varies!\n\u25aatoo short: premature timeout, \nunnecessary retransmissions\n\u25aatoo long: slow reaction to"
+    },
+    {
+        "chunk_id": 15,
+        "document_id": "fae8041d-07c9-4d36-adda-ccc0f5cab45c",
+        "document_name": "20260811_220335_TransportLayer.pdf",
+        "start_index": 13758,
+        "end_index": 14751,
+        "content": "TCP round trip time, timeout\nQ: how to set TCP timeout \nvalue?\n\u25aalonger than RTT, but RTT varies!\n\u25aatoo short: premature timeout, \nunnecessary retransmissions\n\u25aatoo long: slow reaction to \nsegment loss\nQ: how to estimate RTT?\n\u25aaSampleRTT:measured time \nfrom segment transmission until \nACK receipt\n\u2022 ignore retransmissions\n\u25aaSampleRTT will vary, want \nestimated RTT \u201csmoother\u201d\n\u2022 average several recent \nmeasurements, not just current \nSampleRTT\nTransport Layer: 3-28\nTCP Sender (simplified)\nevent: data received from \napplication\n\u25aacreate segment with seq #\n\u25aaseq # is byte-stream number \nof first data byte in  segment\n\u25aastart timer if not already \nrunning \n\u2022 think of timer as for oldest \nunACKed segment\n\u2022 expiration interval: \nTimeOutInterval \nevent: timeout\n\u25aaretransmit segment that \ncaused timeout\n\u25aarestart timer\n \nevent: ACK received \n\u25aaif ACK acknowledges \npreviously unACKed segments\n\u2022 update what is known to be \nACKed\n\u2022 start timer if there are  still \nunACKed segments\nTransport Layer: 3-29"
+    },
+    {
+        "chunk_id": 16,
+        "document_id": "fae8041d-07c9-4d36-adda-ccc0f5cab45c",
+        "document_name": "20260811_220335_TransportLayer.pdf",
+        "start_index": 14751,
+        "end_index": 15734,
+        "content": "\u25aarestart timer\n \nevent: ACK received \n\u25aaif ACK acknowledges \npreviously unACKed segments\n\u2022 update what is known to be \nACKed\n\u2022 start timer if there are  still \nunACKed segments\nTransport Layer: 3-29\nTCP Receiver: ACK generation [RFC 5681]\nEvent at receiver\narrival of in-order segment with\nexpected seq #. All data up to\nexpected seq # already ACKed\narrival of in-order segment with\nexpected seq #. One other \nsegment has ACK pending\narrival of out-of-order segment\nhigher-than-expect seq. # .\nGap detected\narrival of segment that \npartially or completely fills gap\nTCP receiver action\ndelayed ACK. Wait up to 500ms\nfor next segment. If no next segment,\nsend ACK\nimmediately send single cumulative \nACK, ACKing both in-order segments \nimmediately send duplicate ACK, \nindicating seq. # of next expected byte\nimmediate send ACK, provided that\nsegment starts at lower end of gap\nTransport Layer: 3-30\nTCP: retransmission scenarios\nlost ACK scenario\nHost B\nHost A\nSeq=92, 8 bytes of data"
+    },
+    {
+        "chunk_id": 17,
+        "document_id": "fae8041d-07c9-4d36-adda-ccc0f5cab45c",
+        "document_name": "20260811_220335_TransportLayer.pdf",
+        "start_index": 15734,
+        "end_index": 16730,
+        "content": "immediate send ACK, provided that\nsegment starts at lower end of gap\nTransport Layer: 3-30\nTCP: retransmission scenarios\nlost ACK scenario\nHost B\nHost A\nSeq=92, 8 bytes of data\nSeq=92, 8 bytes of data\nACK=100\nX\nACK=100\ntimeout\npremature timeout\nHost B\nHost A\nSeq=92,  8\nbytes of data\nACK=120\ntimeout\nACK=100\nACK=120\nSendBase=100\nSendBase=120\nSendBase=120\nSeq=92, 8 bytes of data\nSeq=100, 20 bytes of data\nSendBase=92\nsend cumulative \nACK for 120\nTransport Layer: 3-31\nTCP: retransmission scenarios\ncumulative ACK covers \nfor earlier lost ACK\nHost B\nHost A\nSeq=92, 8 bytes of data\nSeq=120,  15 bytes of data\nSeq=100, 20 bytes of data\nX\nACK=100\nACK=120\nTransport Layer: 3-32\nTCP fast retransmit\nHost B\nHost A\ntimeout\nX\nSeq=100, 20 bytes of data\nReceipt of three duplicate ACKs \nindicates 3 segments received \nafter a missing segment \u2013 lost \nsegment is likely. So retransmit!\nif sender receives 3 additional \nACKs for same data (\u201ctriple \nduplicate ACKs\u201d), resend unACKed \nsegment with smallest seq #"
+    },
+    {
+        "chunk_id": 18,
+        "document_id": "fae8041d-07c9-4d36-adda-ccc0f5cab45c",
+        "document_name": "20260811_220335_TransportLayer.pdf",
+        "start_index": 16730,
+        "end_index": 17724,
+        "content": "after a missing segment \u2013 lost \nsegment is likely. So retransmit!\nif sender receives 3 additional \nACKs for same data (\u201ctriple \nduplicate ACKs\u201d), resend unACKed \nsegment with smallest seq #\n\u25aalikely that unACKed segment lost, \nso don\u2019t wait for timeout\nTCP fast retransmit\nTransport Layer: 3-33\nTCP 3-way handshake\nSYNbit=1, Seq=x\nchoose init seq num, x\nsend TCP SYN msg\nESTAB\nSYNbit=1, Seq=y\nACKbit=1; ACKnum=x+1\nchoose init seq num, y\nsend TCP SYNACK\nmsg, acking SYN\nACKbit=1, ACKnum=y+1\nreceived SYNACK(x) \nindicates server is live;\nsend ACK for SYNACK;\nthis segment may contain \nclient-to-server data\nreceived ACK(y) \nindicates client is live\nSYN SENT\nESTAB\nSYN RCVD\nClient state\nLISTEN\nServer state\nLISTEN\nclientSocket = socket(AF_INET, SOCK_STREAM)\nserverSocket = socket(AF_INET,SOCK_STREAM)\nserverSocket.bind((\u2018\u2019,serverPort))\nserverSocket.listen(1)\nconnectionSocket, addr = serverSocket.accept()\nclientSocket.connect((serverName,serverPort))\nTransport Layer: 3-34\nClosing a TCP connection"
+    },
+    {
+        "chunk_id": 19,
+        "document_id": "fae8041d-07c9-4d36-adda-ccc0f5cab45c",
+        "document_name": "20260811_220335_TransportLayer.pdf",
+        "start_index": 17724,
+        "end_index": 18161,
+        "content": "serverSocket.bind((\u2018\u2019,serverPort))\nserverSocket.listen(1)\nconnectionSocket, addr = serverSocket.accept()\nclientSocket.connect((serverName,serverPort))\nTransport Layer: 3-34\nClosing a TCP connection\n\u25aaclient, server each close their side of connection\n\u2022 send TCP segment with FIN bit = 1\n\u25aarespond to received FIN with ACK\n\u2022 on receiving FIN, ACK can be combined with own FIN\n\u25aasimultaneous FIN exchanges can be handled\nTransport Layer: 3-35"
+    }
+]

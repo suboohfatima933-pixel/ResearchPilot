@@ -5,26 +5,49 @@ import faiss
 import numpy as np
 
 from models.embedding import Embedding
-
 from models.search_result import SearchResult
 
 
 class VectorStoreService:
-    """Manages the FAISS vector store."""
+    """Manages document-scoped FAISS vector stores."""
 
-    INDEX_DIR = Path("data/vector_store")
-    INDEX_FILE = INDEX_DIR / "faiss.index"
-    METADATA_FILE = INDEX_DIR / "metadata.json"
+    BASE_INDEX_DIR = Path("data/vector_stores")
 
     def __init__(self):
-        self.INDEX_DIR.mkdir(parents=True, exist_ok=True)
-        self.index = None
+        self.BASE_INDEX_DIR.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
 
-    def create(self, embeddings: list[Embedding]) -> None:
-        """Create a FAISS index from embeddings."""
+        self.index = None
+        self.metadata = []
+
+    def _get_document_dir(self, document_id: str) -> Path:
+        """Return the vector store directory for a document."""
+
+        if not document_id:
+            raise ValueError("Document ID is required.")
+
+        document_dir = self.BASE_INDEX_DIR / document_id
+        document_dir.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+
+        return document_dir
+
+    def create(
+        self,
+        embeddings: list[Embedding],
+        document_id: str,
+    ) -> None:
+        """Create a FAISS index for a specific document."""
 
         if not embeddings:
             raise ValueError("No embeddings provided.")
+
+        if not document_id:
+            raise ValueError("Document ID is required.")
 
         dimensions = embeddings[0].dimensions
 
@@ -40,6 +63,7 @@ class VectorStoreService:
         self.metadata = [
             {
                 "chunk_id": embedding.chunk_id,
+                "document_id": document_id,
                 "document_name": embedding.document_name,
                 "start_index": embedding.start_index,
                 "end_index": embedding.end_index,
@@ -47,48 +71,77 @@ class VectorStoreService:
             }
             for embedding in embeddings
         ]
-       
-    def save(self) -> None:
-        """Save the FAISS index and metadata."""
+
+    def save(self, document_id: str) -> None:
+        """Save the FAISS index and metadata for a document."""
 
         if self.index is None:
             raise ValueError("No index has been created.")
 
+        document_dir = self._get_document_dir(document_id)
+
+        index_file = document_dir / "faiss.index"
+        metadata_file = document_dir / "metadata.json"
+
         faiss.write_index(
             self.index,
-            str(self.INDEX_FILE),
+            str(index_file),
         )
 
-        with open(self.METADATA_FILE, "w", encoding="utf-8") as file:
+        with open(
+            metadata_file,
+            "w",
+            encoding="utf-8",
+        ) as file:
             json.dump(
                 self.metadata,
                 file,
                 indent=4,
-            )    
+            )
 
-    def load(self) -> None:
-        """Load the FAISS index and metadata."""
+    def load(self, document_id: str) -> None:
+        """Load the FAISS index and metadata for a document."""
 
-        if not self.INDEX_FILE.exists():
-            raise FileNotFoundError("Vector store not found.")
+        document_dir = self._get_document_dir(document_id)
+
+        index_file = document_dir / "faiss.index"
+        metadata_file = document_dir / "metadata.json"
+
+        if not index_file.exists():
+            raise FileNotFoundError(
+                f"Vector store not found for document: {document_id}"
+            )
+
+        if not metadata_file.exists():
+            raise FileNotFoundError(
+                f"Vector store metadata not found for document: {document_id}"
+            )
 
         self.index = faiss.read_index(
-            str(self.INDEX_FILE)
+            str(index_file)
         )
 
-        with open(self.METADATA_FILE, "r", encoding="utf-8") as file:
+        with open(
+            metadata_file,
+            "r",
+            encoding="utf-8",
+        ) as file:
             self.metadata = json.load(file)
 
     def search(
         self,
         query_embedding: list[float],
+        document_id: str,
         top_k: int = 5,
         min_score: float = 0.60,
     ) -> list[SearchResult]:
-        """Search the vector store for similar embeddings."""
+        """Search a specific document's vector store."""
 
         if self.index is None:
             raise ValueError("Vector store has not been loaded.")
+
+        if not document_id:
+            raise ValueError("Document ID is required.")
 
         query_vector = np.array(
             [query_embedding],
@@ -122,9 +175,9 @@ class VectorStoreService:
                     content=metadata["content"],
                 )
             )
-        
+
         return results
-    
+
     @property
     def total_vectors(self) -> int:
         """Return the total number of indexed vectors."""
