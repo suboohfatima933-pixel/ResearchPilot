@@ -1,8 +1,6 @@
 import streamlit as st
 from pathlib import Path
 
-from models.chat_message import ChatMessage
-from models.chat_session import ChatSession
 from services.chat.chat_service import ChatService
 
 
@@ -10,7 +8,9 @@ def render():
     """Render the Chat with Paper page."""
 
     st.title("💬 Chat with Paper")
-    st.caption("Ask questions about your uploaded research papers.")
+    st.caption(
+        "Ask questions about your uploaded research papers."
+    )
 
     # ---------------------------------------------------------
     # Find available documents
@@ -33,27 +33,26 @@ def render():
                 document_options[directory.name] = pdf_files[0].name
 
     # ---------------------------------------------------------
-    # Initialize chat sessions
+    # Initialize Chat Service
     # ---------------------------------------------------------
 
-    if "chat_sessions" not in st.session_state:
-        st.session_state.chat_sessions = {}
+    chat_service = ChatService()
+
+    # ---------------------------------------------------------
+    # Load persisted chats
+    # ---------------------------------------------------------
+
+    chats = chat_service.get_all_chats()
+
+    # ---------------------------------------------------------
+    # Active Chat State
+    # ---------------------------------------------------------
 
     if "active_chat_id" not in st.session_state:
         st.session_state.active_chat_id = None
 
-    # ---------------------------------------------------------
-    # No documents
-    # ---------------------------------------------------------
-
-    if not document_options:
-
-        st.info(
-            "📄 No research papers are available yet. "
-            "Upload a paper in Paper Analysis first."
-        )
-
-        return
+    if "show_new_chat" not in st.session_state:
+        st.session_state.show_new_chat = False
 
     # ---------------------------------------------------------
     # Main Chat Workspace
@@ -76,49 +75,38 @@ def render():
             "＋ New Chat",
             use_container_width=True,
         ):
-
             st.session_state.show_new_chat = True
+            st.session_state.active_chat_id = None
+            st.rerun()
 
         st.divider()
 
-        sessions = list(
-            st.session_state.chat_sessions.values()
-        )
-
-        sessions.sort(
-            key=lambda session: session.updated_at,
-            reverse=True,
-        )
-
-        if not sessions:
+        if not chats:
 
             st.caption(
                 "No conversations yet."
             )
 
-        for session in sessions:
+        for chat in chats:
 
             is_active = (
-                session.id
+                chat.id
                 == st.session_state.active_chat_id
             )
 
             button_label = (
-                f"● {session.title}"
+                f"● {chat.title}"
                 if is_active
-                else session.title
+                else chat.title
             )
 
             if st.button(
                 button_label,
-                key=f"chat_{session.id}",
+                key=f"chat_{chat.id}",
                 use_container_width=True,
             ):
 
-                st.session_state.active_chat_id = (
-                    session.id
-                )
-
+                st.session_state.active_chat_id = chat.id
                 st.session_state.show_new_chat = False
 
                 st.rerun()
@@ -133,12 +121,18 @@ def render():
         # New Chat
         # -----------------------------------------------------
 
-        if st.session_state.get(
-            "show_new_chat",
-            False,
-        ):
+        if st.session_state.show_new_chat:
 
             st.subheader("＋ New Chat")
+
+            if not document_options:
+
+                st.info(
+                    "📄 No research papers are available yet. "
+                    "Upload a paper in Paper Analysis first."
+                )
+
+                return
 
             selected_document_id = st.selectbox(
                 "Select a research paper",
@@ -163,19 +157,12 @@ def render():
                     document_name
                 ).stem
 
-                session = ChatSession(
-                    title=title,
+                chat = chat_service.create_chat(
                     document_id=selected_document_id,
+                    title=title,
                 )
 
-                st.session_state.chat_sessions[
-                    session.id
-                ] = session
-
-                st.session_state.active_chat_id = (
-                    session.id
-                )
-
+                st.session_state.active_chat_id = chat.id
                 st.session_state.show_new_chat = False
 
                 st.rerun()
@@ -186,11 +173,7 @@ def render():
         # No Active Chat
         # -----------------------------------------------------
 
-        active_chat_id = (
-            st.session_state.active_chat_id
-        )
-
-        if not active_chat_id:
+        if not st.session_state.active_chat_id:
 
             st.info(
                 "Create a new chat to start "
@@ -203,19 +186,23 @@ def render():
         # Load Active Chat
         # -----------------------------------------------------
 
-        session = st.session_state.chat_sessions.get(
-            active_chat_id
+        session = chat_service.get_chat(
+            st.session_state.active_chat_id
         )
 
         if session is None:
 
             st.session_state.active_chat_id = None
 
-            st.info(
+            st.warning(
                 "The selected chat could not be found."
             )
 
             return
+
+        # -----------------------------------------------------
+        # Document
+        # -----------------------------------------------------
 
         document_name = document_options.get(
             session.document_id,
@@ -256,20 +243,11 @@ def render():
 
         if prompt:
 
-            user_message = ChatMessage(
-                role="user",
-                content=prompt,
-            )
-
-            session.messages.append(
-                user_message
-            )
+            history = session.messages.copy()
 
             with st.chat_message("user"):
 
                 st.markdown(prompt)
-
-            chat_service = ChatService()
 
             with st.chat_message("assistant"):
 
@@ -280,7 +258,8 @@ def render():
                     result = chat_service.send_message(
                         message=prompt,
                         document_id=session.document_id,
-                        history=session.messages,
+                        history=history,
+                        chat_id=session.id,
                     )
 
                 assistant_message = result[
@@ -315,20 +294,5 @@ def render():
                             st.text(
                                 source.content
                             )
-
-            session.messages.append(
-                assistant_message
-            )
-
-            # Update chat timestamp
-            from datetime import datetime, timezone
-
-            session.updated_at = (
-                datetime.now(timezone.utc)
-            )
-
-            # Generate a better title after the first question
-            if len(session.messages) == 2:
-                session.title = prompt[:40]
 
             st.rerun()

@@ -96,3 +96,31 @@
 - Source chunk display
 - RAGService orchestration
 - LLMService abstraction
+
+### 💬 Conversational RAG & Chat
+
+- Conversational RAG
+- Document-scoped chat sessions
+- Conversation-aware query contextualization
+- Follow-up question handling
+- `ChatService`
+- `ChatSession` model
+- Multiple independent conversations
+- Chat history panel
+- New Chat functionality
+- Document-specific retrieval
+- ChatGPT-style conversation interface
+- Retrieved source display
+
+### 🗄️ Persistent Chat & Database
+
+- SQLite database
+- `DatabaseService`
+- `ChatRepository`
+- Persistent chat sessions
+- Persistent chat messages
+- Chat restoration after application restart
+- Chat and message relationships
+- Database-backed chat history
+- Chat timestamps
+- Persistent chat CRUD foundation

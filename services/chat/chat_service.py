@@ -1,4 +1,7 @@
 from models.chat_message import ChatMessage
+from models.chat_session import ChatSession
+
+from services.database.chat_repository import ChatRepository
 from services.llm.llm_service import LLMService
 from services.rag.rag_service import RAGService
 
@@ -9,12 +12,48 @@ class ChatService:
     def __init__(self):
         self.rag_service = RAGService()
         self.llm_service = LLMService()
+        self.chat_repository = ChatRepository()
+
+    def create_chat(
+        self,
+        document_id: str,
+        title: str = "New Chat",
+    ) -> ChatSession:
+        """Create and persist a new chat session."""
+
+        if not document_id:
+            raise ValueError("Document ID is required.")
+
+        chat = ChatSession(
+            title=title,
+            document_id=document_id,
+        )
+
+        self.chat_repository.create_chat(chat)
+
+        return chat
+
+    def get_chat(
+        self,
+        chat_id: str,
+    ) -> ChatSession | None:
+        """Retrieve a chat from persistent storage."""
+
+        return self.chat_repository.get_chat(
+            chat_id
+        )
+
+    def get_all_chats(self) -> list[ChatSession]:
+        """Retrieve all persisted chats."""
+
+        return self.chat_repository.get_all_chats()
 
     def send_message(
         self,
         message: str,
         document_id: str,
         history: list[ChatMessage],
+        chat_id: str,
     ) -> dict:
         """Send a message and generate a document-grounded response."""
 
@@ -23,6 +62,9 @@ class ChatService:
 
         if not document_id:
             raise ValueError("Document ID is required.")
+
+        if not chat_id:
+            raise ValueError("Chat ID is required.")
 
         # Convert recent conversation into text
         conversation = "\n".join(
@@ -36,19 +78,59 @@ class ChatService:
             conversation,
         )
 
-        # Retrieve and answer using the contextualized query
+        # Generate document-grounded answer
         result = self.rag_service.answer(
             contextualized_query,
             document_id,
         )
 
+        user_message = ChatMessage(
+            role="user",
+            content=message,
+        )
+
+        assistant_message = ChatMessage(
+            role="assistant",
+            content=result["answer"],
+        )
+
+        # Persist both messages
+        self.chat_repository.add_message(
+            chat_id,
+            user_message,
+        )
+
+        self.chat_repository.add_message(
+            chat_id,
+            assistant_message,
+        )
+
         return {
-            "message": ChatMessage(
-                role="assistant",
-                content=result["answer"],
-            ),
+            "message": assistant_message,
             "sources": result["sources"],
         }
+
+    def update_title(
+        self,
+        chat_id: str,
+        title: str,
+    ) -> None:
+        """Update a chat title."""
+
+        self.chat_repository.update_title(
+            chat_id,
+            title,
+        )
+
+    def delete_chat(
+        self,
+        chat_id: str,
+    ) -> None:
+        """Delete a chat and its messages."""
+
+        self.chat_repository.delete_chat(
+            chat_id
+        )
 
     def _contextualize_query(
         self,
@@ -90,4 +172,6 @@ Latest User Question:
 Standalone Question:
 """.strip()
 
-        return self.llm_service.generate(prompt).strip()
+        return self.llm_service.generate(
+            prompt
+        ).strip()
