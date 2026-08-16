@@ -21,6 +21,11 @@ data/cache/
 data/uploads/
 data/vectorstore/
 
+# Database
+database/*.db
+database/*.sqlite
+database/*.sqlite3
+
 # Streamlit
 .streamlit/
 
