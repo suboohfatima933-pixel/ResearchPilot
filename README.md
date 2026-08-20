@@ -124,3 +124,21 @@
 - Database-backed chat history
 - Chat timestamps
 - Persistent chat CRUD foundation
+
+### 💬 Chat with Paper
+
+- Persistent document-based chat sessions
+- Choose an existing research paper or upload a new one
+- End-to-end PDF processing from the chat workflow
+- Automatic parsing, chunking, embedding, and vector storage
+- Context-aware conversational RAG
+- Follow-up question contextualization
+- Persistent chat history and messages
+- Document-grounded AI responses
+- Source chunk display with similarity scores
+- Create multiple chats across research papers
+- Duplicate chat prevention
+- Rename chat conversations
+- Delete chats with associated messages
+- SQLite-backed chat persistence
+- FAISS vector store integration

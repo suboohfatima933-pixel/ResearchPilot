@@ -38,6 +38,21 @@ class DatabaseService:
 
             connection.execute(
                 """
+                CREATE TABLE IF NOT EXISTS documents (
+                    document_id TEXT PRIMARY KEY,
+                    filename TEXT NOT NULL,
+                    original_filename TEXT NOT NULL,
+                    filepath TEXT NOT NULL,
+                    file_size INTEGER NOT NULL,
+                    page_count INTEGER NOT NULL,
+                    metadata TEXT NOT NULL,
+                    uploaded_at TEXT NOT NULL
+                )
+                """
+            )            
+
+            connection.execute(
+                """
                 CREATE TABLE IF NOT EXISTS chats (
                     id TEXT PRIMARY KEY,
                     title TEXT NOT NULL,

@@ -44,6 +44,8 @@ class ChatRepository:
 
         return chat
 
+
+
     def get_chat(
         self,
         chat_id: str,
@@ -83,6 +85,51 @@ class ChatRepository:
                 row["updated_at"]
             ),
         )
+
+    def get_by_document_id(
+        self,
+        document_id: str,
+    ) -> ChatSession | None:
+        """Retrieve the most recent chat for a document."""
+
+        with self.database._get_connection() as connection:
+
+            row = connection.execute(
+                """
+                SELECT
+                    id,
+                    title,
+                    document_id,
+                    created_at,
+                    updated_at
+                FROM chats
+                WHERE document_id = ?
+                ORDER BY updated_at DESC
+                LIMIT 1
+                """,
+                (document_id,),
+            ).fetchone()
+
+        if row is None:
+            return None
+
+        messages = self.get_messages(
+            row["id"]
+        )
+
+        return ChatSession(
+            id=row["id"],
+            title=row["title"],
+            document_id=row["document_id"],
+            messages=messages,
+            created_at=datetime.fromisoformat(
+                row["created_at"]
+            ),
+            updated_at=datetime.fromisoformat(
+                row["updated_at"]
+            ),
+        )
+
 
     def get_all_chats(self) -> list[ChatSession]:
         """Retrieve all chat sessions ordered by recent activity."""
@@ -234,6 +281,7 @@ class ChatRepository:
     ) -> None:
         """Delete a chat and its messages."""
 
+        # Delete chat
         with self.database._get_connection() as connection:
 
             connection.execute(
@@ -244,4 +292,4 @@ class ChatRepository:
                 (chat_id,),
             )
 
-            connection.commit()
+            connection.commit()   

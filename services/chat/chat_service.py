@@ -19,10 +19,17 @@ class ChatService:
         document_id: str,
         title: str = "New Chat",
     ) -> ChatSession:
-        """Create and persist a new chat session."""
+        """Create a chat or return the existing chat."""
 
         if not document_id:
             raise ValueError("Document ID is required.")
+
+        existing_chat = self.chat_repository.get_by_document_id(
+            document_id
+        )
+
+        if existing_chat:
+            return existing_chat
 
         chat = ChatSession(
             title=title,
@@ -32,6 +39,17 @@ class ChatService:
         self.chat_repository.create_chat(chat)
 
         return chat
+
+    def get_chat_by_document(
+        self,
+        document_id: str,
+    ) -> ChatSession | None:
+        """Retrieve an existing chat for a document."""
+
+        return self.chat_repository.get_by_document_id(
+            document_id
+        )    
+
 
     def get_chat(
         self,
@@ -127,6 +145,9 @@ class ChatService:
         chat_id: str,
     ) -> None:
         """Delete a chat and its messages."""
+
+        if not chat_id:
+            raise ValueError("Chat ID is required.")
 
         self.chat_repository.delete_chat(
             chat_id

@@ -2,6 +2,8 @@ import streamlit as st
 from pathlib import Path
 
 from services.chat.chat_service import ChatService
+from services.database.document_repository import DocumentRepository
+from services.pdf.document_service import DocumentService
 
 
 def render():
@@ -12,61 +14,39 @@ def render():
         "Ask questions about your uploaded research papers."
     )
 
-    # ---------------------------------------------------------
-    # Find available documents
-    # ---------------------------------------------------------
-
-    upload_dir = Path("data/uploads")
-
-    document_options = {}
-
-    if upload_dir.exists():
-
-        for directory in upload_dir.iterdir():
-
-            if not directory.is_dir():
-                continue
-
-            pdf_files = list(directory.glob("*.pdf"))
-
-            if pdf_files:
-                document_options[directory.name] = pdf_files[0].name
-
-    # ---------------------------------------------------------
-    # Initialize Chat Service
-    # ---------------------------------------------------------
-
+    # Initialize services
     chat_service = ChatService()
+    document_repository = DocumentRepository()
+    document_service = DocumentService()
 
-    # ---------------------------------------------------------
+    # Load persisted documents
+    documents = document_repository.get_all()
+
+    document_options = {
+        document.document_id: document.original_filename
+        for document in documents
+    }
+
     # Load persisted chats
-    # ---------------------------------------------------------
-
     chats = chat_service.get_all_chats()
 
-    # ---------------------------------------------------------
-    # Active Chat State
-    # ---------------------------------------------------------
-
+    # Active chat state
     if "active_chat_id" not in st.session_state:
         st.session_state.active_chat_id = None
 
     if "show_new_chat" not in st.session_state:
         st.session_state.show_new_chat = False
 
-    # ---------------------------------------------------------
-    # Main Chat Workspace
-    # ---------------------------------------------------------
+    if "show_rename_chat" not in st.session_state:
+        st.session_state.show_rename_chat = False
 
+    # Main chat workspace
     history_col, chat_col = st.columns(
         [0.28, 0.72],
         gap="large",
     )
 
-    # =========================================================
-    # Chat History Panel
-    # =========================================================
-
+    # Chat history
     with history_col:
 
         st.subheader("💬 Chats")
@@ -77,12 +57,12 @@ def render():
         ):
             st.session_state.show_new_chat = True
             st.session_state.active_chat_id = None
+            st.session_state.show_rename_chat = False
             st.rerun()
 
         st.divider()
 
         if not chats:
-
             st.caption(
                 "No conversations yet."
             )
@@ -100,48 +80,102 @@ def render():
                 else chat.title
             )
 
-            if st.button(
-                button_label,
-                key=f"chat_{chat.id}",
-                use_container_width=True,
-            ):
+            chat_button_col, delete_button_col = st.columns(
+                [0.85, 0.15]
+            )
 
-                st.session_state.active_chat_id = chat.id
-                st.session_state.show_new_chat = False
+            with chat_button_col:
 
-                st.rerun()
+                if st.button(
+                    button_label,
+                    key=f"chat_{chat.id}",
+                    use_container_width=True,
+                ):
+                    st.session_state.active_chat_id = chat.id
+                    st.session_state.show_new_chat = False
+                    st.session_state.show_rename_chat = False
 
-    # =========================================================
-    # Current Chat
-    # =========================================================
+                    st.rerun()
 
+            with delete_button_col:
+
+                if st.button(
+                    "🗑️",
+                    key=f"delete_chat_{chat.id}",
+                    help="Delete chat",
+                    use_container_width=True,
+                ):
+                    chat_service.delete_chat(
+                        chat.id
+                    )
+
+                    if (
+                        st.session_state.active_chat_id
+                        == chat.id
+                    ):
+                        st.session_state.active_chat_id = None
+
+                    st.session_state.show_rename_chat = False
+
+                    st.rerun()
+
+    # Current chat
     with chat_col:
 
-        # -----------------------------------------------------
-        # New Chat
-        # -----------------------------------------------------
-
+        # New chat
         if st.session_state.show_new_chat:
 
             st.subheader("＋ New Chat")
 
-            if not document_options:
+            chat_source = st.radio(
+                "How would you like to start?",
+                [
+                    "Choose Existing Paper",
+                    "Upload New Paper",
+                ],
+                horizontal=True,
+            )
 
-                st.info(
-                    "📄 No research papers are available yet. "
-                    "Upload a paper in Paper Analysis first."
+            selected_document_id = None
+            selected_document_name = None
+
+            # Choose existing paper
+            if chat_source == "Choose Existing Paper":
+
+                if not document_options:
+
+                    st.info(
+                        "No existing research papers found. "
+                        "Upload a new paper instead."
+                    )
+
+                else:
+
+                    selected_document_id = st.selectbox(
+                        "Select a research paper",
+                        options=list(
+                            document_options.keys()
+                        ),
+                        format_func=lambda document_id:
+                            document_options[document_id],
+                    )
+
+                    selected_document_name = document_options[
+                        selected_document_id
+                    ]
+
+            # Upload new paper
+            else:
+
+                uploaded_file = st.file_uploader(
+                    "Upload a research paper",
+                    type=["pdf"],
+                    accept_multiple_files=False,
                 )
 
-                return
+                if uploaded_file:
 
-            selected_document_id = st.selectbox(
-                "Select a research paper",
-                options=list(
-                    document_options.keys()
-                ),
-                format_func=lambda document_id:
-                    document_options[document_id],
-            )
+                    selected_document_name = uploaded_file.name
 
             if st.button(
                 "Create Chat",
@@ -149,12 +183,42 @@ def render():
                 use_container_width=True,
             ):
 
-                document_name = document_options[
-                    selected_document_id
-                ]
+                if (
+                    chat_source == "Choose Existing Paper"
+                    and not selected_document_id
+                ):
+
+                    st.warning(
+                        "Please select a research paper."
+                    )
+
+                    return
+
+                if chat_source == "Upload New Paper":
+
+                    if uploaded_file is None:
+
+                        st.warning(
+                            "Please upload a PDF research paper."
+                        )
+
+                        return
+
+                    with st.spinner(
+                        "Uploading and processing paper..."
+                    ):
+
+                        document = document_service.process_upload(
+                            uploaded_file
+                        )
+
+                    selected_document_id = document.document_id
+                    selected_document_name = (
+                        document.original_filename
+                    )
 
                 title = Path(
-                    document_name
+                    selected_document_name
                 ).stem
 
                 chat = chat_service.create_chat(
@@ -164,15 +228,13 @@ def render():
 
                 st.session_state.active_chat_id = chat.id
                 st.session_state.show_new_chat = False
+                st.session_state.show_rename_chat = False
 
                 st.rerun()
 
             return
 
-        # -----------------------------------------------------
-        # No Active Chat
-        # -----------------------------------------------------
-
+        # No active chat
         if not st.session_state.active_chat_id:
 
             st.info(
@@ -182,10 +244,7 @@ def render():
 
             return
 
-        # -----------------------------------------------------
-        # Load Active Chat
-        # -----------------------------------------------------
-
+        # Load active chat
         session = chat_service.get_chat(
             st.session_state.active_chat_id
         )
@@ -193,6 +252,7 @@ def render():
         if session is None:
 
             st.session_state.active_chat_id = None
+            st.session_state.show_rename_chat = False
 
             st.warning(
                 "The selected chat could not be found."
@@ -200,43 +260,103 @@ def render():
 
             return
 
-        # -----------------------------------------------------
         # Document
-        # -----------------------------------------------------
-
         document_name = document_options.get(
             session.document_id,
             "Research Paper",
         )
 
-        st.subheader(
-            f"💬 {session.title}"
+        # Chat header
+        title_col, rename_col = st.columns(
+            [0.9, 0.1]
         )
+
+        with title_col:
+            st.subheader(
+                f"💬 {session.title}"
+            )
+
+        with rename_col:
+            if st.button(
+                "✏️",
+                key=f"rename_chat_{session.id}",
+                help="Rename chat",
+            ):
+                st.session_state.show_rename_chat = True
+                st.rerun()
 
         st.caption(
             f"📄 {document_name}"
         )
 
+        # Display rename form
+        if st.session_state.show_rename_chat:
+
+            with st.form(
+                f"rename_form_{session.id}"
+            ):
+
+                new_title = st.text_input(
+                    "Chat title",
+                    value=session.title,
+                    max_chars=100,
+                )
+
+                rename_col, cancel_col = st.columns(2)
+
+                with rename_col:
+                    rename_clicked = st.form_submit_button(
+                        "Save",
+                        type="primary",
+                        use_container_width=True,
+                    )
+
+                with cancel_col:
+                    cancel_clicked = st.form_submit_button(
+                        "Cancel",
+                        use_container_width=True,
+                    )
+
+            if rename_clicked:
+
+                cleaned_title = new_title.strip()
+
+                if not cleaned_title:
+
+                    st.warning(
+                        "Chat title cannot be empty."
+                    )
+
+                else:
+
+                    chat_service.update_title(
+                        session.id,
+                        cleaned_title,
+                    )
+
+                    st.session_state.show_rename_chat = False
+
+                    st.rerun()
+
+            if cancel_clicked:
+
+                st.session_state.show_rename_chat = False
+
+                st.rerun()
+
         st.divider()
 
-        # -----------------------------------------------------
-        # Display Messages
-        # -----------------------------------------------------
-
+        # Display messages
         for message in session.messages:
 
             with st.chat_message(
                 message.role
             ):
-
                 st.markdown(
                     message.content
                 )
 
-        # -----------------------------------------------------
-        # Chat Input
-        # -----------------------------------------------------
-
+        # Chat input
         prompt = st.chat_input(
             "Ask a question about this paper..."
         )
@@ -246,7 +366,6 @@ def render():
             history = session.messages.copy()
 
             with st.chat_message("user"):
-
                 st.markdown(prompt)
 
             with st.chat_message("assistant"):
