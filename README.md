@@ -170,3 +170,23 @@
 - Retrieved content preview
 - Irrelevant query validation
 - Threshold-based retrieval testing
+
+### 💡 Research Insights
+
+- Interactive AI-powered research insight generation
+- Research paper selection
+- Semantic evidence retrieval from selected papers
+- Multiple targeted retrieval queries for broader paper coverage
+- Executive summary generation
+- Research problem identification
+- Research objectives extraction
+- Methodology analysis
+- Key findings identification
+- Research limitations detection
+- Research gap identification
+- Practical impact analysis
+- Key takeaways generation
+- Grounded insights based on retrieved paper evidence
+- Structured Pydantic-based insight generation
+- JSON response validation and parsing
+- Session-state persistence for generated insights

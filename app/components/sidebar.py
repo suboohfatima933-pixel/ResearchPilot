@@ -4,6 +4,7 @@ PAGES = {
     "🏠 Home": "home",
     "🔍 Research Discovery": "discovery",
     "📄 Paper Analysis": "analysis",
+    "💡 Research Insights": "research_insights",
     "⚖️ Compare Papers": "compare",
     "💬 Chat with Paper": "chat",
     "🎓 Learning Center": "learning",

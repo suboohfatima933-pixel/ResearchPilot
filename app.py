@@ -7,6 +7,7 @@ from app.pages import (
     home,
     discovery,
     analysis,
+    research_insights,
     compare,
     chat,
     learning,
@@ -14,6 +15,7 @@ from app.pages import (
     debugger,
     workflow,
     settings,
+   
 )
 
 st.set_page_config(
@@ -37,6 +39,7 @@ PAGE_MAP = {
     "home": home.render,
     "discovery": discovery.render,
     "analysis": analysis.render,
+    "research_insights": research_insights.render,
     "compare": compare.render,
     "chat": chat.render,
     "learning": learning.render,
