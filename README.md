@@ -190,3 +190,29 @@
 - Structured Pydantic-based insight generation
 - JSON response validation and parsing
 - Session-state persistence for generated insights
+
+### 🎓 Learning Center
+
+- Interactive AI-powered learning experience for research papers
+- Research paper selection
+- Beginner, Intermediate, and Advanced learning levels
+- Difficulty-based AI-generated learning material
+- Multi-query semantic evidence retrieval
+- Simplified research paper explanation
+- Key concept extraction and explanation
+- Interactive expandable concept learning
+- AI-generated question and answer flashcards
+- Interactive answer reveal functionality
+- AI-generated multiple-choice knowledge quiz
+- Four options for each quiz question
+- Correct answer validation
+- Quiz completion validation
+- Automatic score and percentage calculation
+- Visual quiz progress indicator
+- Correct and incorrect answer review
+- Answer explanations for better understanding
+- Quiz retake functionality
+- Grounded learning content based on retrieved paper evidence
+- Structured Pydantic-based learning content validation
+- JSON response parsing and validation
+- Session-state handling for learning material and quiz results
