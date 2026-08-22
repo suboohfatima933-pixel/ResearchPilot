@@ -216,3 +216,34 @@
 - Structured Pydantic-based learning content validation
 - JSON response parsing and validation
 - Session-state handling for learning material and quiz results
+
+### 📊 Presentation Generator
+
+- AI-generated presentations from research papers
+- Research paper selection
+- Multiple presentation types
+- Adjustable slide count
+- Grounded evidence retrieval from the selected paper
+- Representative evidence collection across key research areas
+- Context-aware presentation generation
+- Research Summary presentation mode
+- Academic Presentation mode
+- Executive Summary presentation mode
+- Educational Presentation mode
+- Structured AI-generated presentation content
+- Pydantic validation for presentation responses
+- Strict JSON response parsing
+- Invalid AI response handling
+- Grounded content generation to reduce hallucinations
+- Slide-by-slide presentation preview
+- Expandable slide content inspection
+- Slide titles and concise bullet points
+- AI-generated speaker notes
+- Real PowerPoint `.pptx` export
+- Automatic title slide generation
+- 16:9 widescreen PowerPoint layout
+- Generated content slides
+- Bullet point formatting
+- Slide numbering
+- Unique timestamped export filenames
+- Downloadable PowerPoint presentations
