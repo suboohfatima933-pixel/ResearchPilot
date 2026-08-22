@@ -247,3 +247,22 @@
 - Slide numbering
 - Unique timestamped export filenames
 - Downloadable PowerPoint presentations
+
+### 🔄 Agent Workflow
+
+- Core ResearchPilot pipeline visualization
+- Document processing workflow
+- Document chunking visualization
+- Embedding generation workflow
+- Document-scoped vector storage explanation
+- Semantic evidence retrieval workflow
+- Grounded AI analysis visualization
+- Research output workflow
+- Step-by-step pipeline overview
+- Research Insights workflow
+- Compare Papers workflow
+- Chat with Paper workflow
+- Learning Center workflow
+- Presentation Generator workflow
+- Clear explanation of the grounded AI approach
+- Architecture-focused workflow inspection
