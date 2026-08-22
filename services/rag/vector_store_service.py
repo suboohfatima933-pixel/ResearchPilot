@@ -22,17 +22,27 @@ class VectorStoreService:
         self.index = None
         self.metadata = []
 
-    def _get_document_dir(self, document_id: str) -> Path:
+    def _get_document_dir(
+        self,
+        document_id: str,
+        create: bool = False,
+    ) -> Path:
         """Return the vector store directory for a document."""
 
         if not document_id:
-            raise ValueError("Document ID is required.")
+            raise ValueError(
+                "Document ID is required."
+            )
 
-        document_dir = self.BASE_INDEX_DIR / document_id
-        document_dir.mkdir(
-            parents=True,
-            exist_ok=True,
+        document_dir = (
+            self.BASE_INDEX_DIR / document_id
         )
+
+        if create:
+            document_dir.mkdir(
+                parents=True,
+                exist_ok=True,
+            )
 
         return document_dir
 
@@ -58,6 +68,9 @@ class VectorStoreService:
             dtype="float32",
         )
 
+
+        faiss.normalize_L2(vectors)
+
         self.index.add(vectors)
 
         self.metadata = [
@@ -78,7 +91,10 @@ class VectorStoreService:
         if self.index is None:
             raise ValueError("No index has been created.")
 
-        document_dir = self._get_document_dir(document_id)
+        document_dir = self._get_document_dir(
+            document_id,
+            create=True,
+        )
 
         index_file = document_dir / "faiss.index"
         metadata_file = document_dir / "metadata.json"
@@ -148,6 +164,8 @@ class VectorStoreService:
             dtype="float32",
         )
 
+        faiss.normalize_L2(query_vector)
+        
         scores, indices = self.index.search(
             query_vector,
             top_k,

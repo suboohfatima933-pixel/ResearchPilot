@@ -142,3 +142,15 @@
 - Delete chats with associated messages
 - SQLite-backed chat persistence
 - FAISS vector store integration
+
+### ⚖️ Compare Papers
+
+- Select and compare two different research papers.
+- Compare research objectives.
+- Compare methodologies.
+- Compare key findings.
+- Compare strengths and limitations.
+- Compare conclusions.
+- Ask custom comparison questions.
+- Retrieve evidence independently from both papers.
+- Generate AI-powered, evidence-grounded comparisons.

@@ -1,0 +1,258 @@
+[
+    {
+        "chunk_id": 1,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 0,
+        "end_index": 970,
+        "content": "arXiv:2003.07678v3  [cs.CY]  26 Mar 2020\nAccepted as a workshop paper at AI4AH, ICLR 2020\nAN OVERVIEW AND CASE STUDY OF THE CLINICAL\nAI MODEL DEVELOPMENT LIFE CYCLE FOR\nHEALTHCARE SYSTEMS\nCharles Lu, Julia Strout, Romane Gauriau, Brad Wright,\nFabiola Bezerra De Carvalho Marcruz, Varun Buch & Katherine Andriole\nMassachusetts General Hospital\nBrigham and Women\u2019s Hospital\nHarvard Medical School\nclu@mgh.harvard.edu\nABSTRACT\nHealthcare is one of the most promising areas for machine learning models to\nmake a positive impact. However, successful adoption of AI-based systems in\nhealthcare depends on engaging and educating stakeholders from diverse back-\ngrounds about the development process of AI models. We present a broadly ac-\ncessible overview of the development life cycle of clinical AI models that is gen-\neral enough to be adapted to most machine learning projects, and then give an\nin-depth case study of the development process of a deep learning based system"
+    },
+    {
+        "chunk_id": 2,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 970,
+        "end_index": 1962,
+        "content": "eral enough to be adapted to most machine learning projects, and then give an\nin-depth case study of the development process of a deep learning based system\nto detect aortic aneurysms in Computed Tomography (CT) exams. We hope other\nhealthcare institutions and clinical practitioners \ufb01nd the insights we share about\nthe development process useful in informing their own model development efforts\nand to increase the likelihood of successful deployment and integration of AI in\nhealthcare.\n1\nINTRODUCTION\nThe \ufb01eld of machine learning (ML) has the potential to fundamentally improve healthcare systems\nby capitalizing on the advances of deep learning in computer vision, natural language processing,\nand speech recognition, facilitated by the increasing accumulation of medical data and the widening\navailability of computing resources (Krizhevsky et al., 2012; Devlin et al., 2019; Chorowski et al.,\n2015). There continues to be an increasing amount of research in using models to predict dis-"
+    },
+    {
+        "chunk_id": 3,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 1962,
+        "end_index": 2959,
+        "content": "availability of computing resources (Krizhevsky et al., 2012; Devlin et al., 2019; Chorowski et al.,\n2015). There continues to be an increasing amount of research in using models to predict dis-\neases, detect biomarkers, improve patient triage, decrease diagnosis time, facilitate novel drug dis-\ncovery, and optimize hospital operations (Fauw et al., 2018; Esteva et al., 2019; Dana et al., 2018;\nPutin et al., 2016; Annarumma et al., 2019). However, in spite of all this promising research, a di-\nvide remains between model development and successfully translating results into actual clinical\napplication. Machine learning in healthcare differs from many other domains, in that labeled data is\nextremely expensive to obtain as it must be labeled by clinicians and deployment to legacy hospital\nsystems requires tight vendor integration in a highly regulated environment. Clinicians should criti-\ncally and carefully assess AI applications, as many previous attempts (e.g. expert systems and IBM"
+    },
+    {
+        "chunk_id": 4,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 2959,
+        "end_index": 3939,
+        "content": "cally and carefully assess AI applications, as many previous attempts (e.g. expert systems and IBM\nWatson), have had dif\ufb01culty meeting initial expectations in medicine (Heath\ufb01eld, 1999; Strickland,\n2019).\nFor clinical AI to be adopted successfully, working processes need to be formalized to help mitigate\nrisk while developing AI-related projects; however, existing project methodologies from software\nengineering are dif\ufb01cult to adapt to clinical ML projects, which are more similar to applied research\nprojects, where progress and \ufb01nal deliverables are dif\ufb01cult to estimate a priori. Model development\nis an iterative process which depends heavily on prototypes, experimentations, and constant interac-\ntion with clinical expertise to guide and interpret results. To our knowledge, there is a lack of existing\nwork that focuses on a task-agnostic ML model development framework for clinical applications in\nhealthcare systems.\n1\nAccepted as a workshop paper at AI4AH, ICLR 2020"
+    },
+    {
+        "chunk_id": 5,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 3939,
+        "end_index": 4870,
+        "content": "work that focuses on a task-agnostic ML model development framework for clinical applications in\nhealthcare systems.\n1\nAccepted as a workshop paper at AI4AH, ICLR 2020\nBy detailing our clinical AI development process and extrapolating common differentiators of suc-\ncessful projects, we hope other organizations can incorporate useful aspects to bridge the gap be-\ntween machine learning and clinical utility. In the following sections, we \ufb01rst present a detailed\noverview of the development cycle for clinical AI projects aimed at a broad audience and then give\na model development case study of a project to detect aortic aneurysms.\n2\nTHE CLINICAL AI DEVELOPMENT CYCLE\nClinically\nuseful &\nfeasible?\nDesign\ncohort &\ncollect\ndata\nAnnotate\ndata\nTrain\nmodel\nEvaluate\nmodel\nAccept\n& deploy\nTerminate\nproject\nYes\nClinical Validation\nNo\nFigure 1: The clinical AI model development cycle.\n2.1\nFEASIBILITY AND IMPACT ASSESSMENT OF PROJECT"
+    },
+    {
+        "chunk_id": 6,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 4870,
+        "end_index": 5859,
+        "content": "data\nTrain\nmodel\nEvaluate\nmodel\nAccept\n& deploy\nTerminate\nproject\nYes\nClinical Validation\nNo\nFigure 1: The clinical AI model development cycle.\n2.1\nFEASIBILITY AND IMPACT ASSESSMENT OF PROJECT\nBefore undertaking any development efforts, a proposed project should be evaluated for feasibility,\nscope, and clinical impact. Representatives from all stakeholders including clinical, technical, and\ncommercial teams should be present to establish reasonable goals and timelines for the project.\nPotential projects should have a clear, well-de\ufb01ned clinical use case for the model\u2019s application. In\nour experience, most project proposals do not pass the feasibility and impact assessment stage. A\ncommon reason why a project is not undertaken is due to insuf\ufb01cient data resources, either lacking\nthe quantity or quality to train a performant model. Other projects may receive a low priority if\nthe clinical impact is too narrow or limited in scope, such as a model to predict rare or non-critical"
+    },
+    {
+        "chunk_id": 7,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 5859,
+        "end_index": 6815,
+        "content": "the clinical impact is too narrow or limited in scope, such as a model to predict rare or non-critical\nconditions.\nIf a project is deemed feasible and impactful, important design decisions must be formalized that\nwill impact the rest of the development cycle. Considerations at this stage can include de\ufb01ning valid\ninputs to the model, choosing what labels to collect or annotations to perform, strategies for clinical\nevaluation, aligning expectations on timelines, and de\ufb01ning the acceptance criteria.\n2.2\nDATA ACQUISITION, COHORT SELECTION, AND DATA CLEANING\nOnce the feasibility and impact of a project has been assessed, the \ufb01rst step for most projects is\nthe collection and aggregation of data resources. Within a healthcare system, several teams must\ncoordinate and take measures to ensure that Protected Health information (PHI) is safeguarded and\nprivacy is maintained. This may require de-identi\ufb01cation of medical data and obtaining the requisite"
+    },
+    {
+        "chunk_id": 8,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 6815,
+        "end_index": 7762,
+        "content": "coordinate and take measures to ensure that Protected Health information (PHI) is safeguarded and\nprivacy is maintained. This may require de-identi\ufb01cation of medical data and obtaining the requisite\npermissions and approvals from human research committees and Institutional Review Boards (IRB).\nAfter the bulk data is acquired, a cohort must be selected while considering multiple factors such\nas patient demographics, exclusion criteria, and even characteristics of the data acquisition process\nitself. Especially in medical data, a long tail of outlying edge cases may need to be excluded, and\nquali\ufb01cations may need to be placed as to what is considered valid for the model to accept as input.\nBiases in the data acquisition process itself can also create issues during model development and\nevaluation. For example, in one of our projects to detect stroke in CT, we realized that an imbalance\n2\nAccepted as a workshop paper at AI4AH, ICLR 2020"
+    },
+    {
+        "chunk_id": 9,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 7762,
+        "end_index": 8690,
+        "content": "evaluation. For example, in one of our projects to detect stroke in CT, we realized that an imbalance\n2\nAccepted as a workshop paper at AI4AH, ICLR 2020\nin our dataset acquired through imaging scanners of two different manufactures caused the model\nto make negative predictions 50%-50% but output positive predictions 95%-5% skewed towards\nthe predominant manufacture! This examples highlights the need to balance multiple factors of the\ntraining dataset to learn a model that generalizes properly across varying data sources. Determining\nmore subtle parameters of the data will usually require the domain expertise of a clinician.\nOnce data is acquired and a cohort is created, additional processing, cleaning, normalization, and\ninspection of the data is done to standardize the format before annotating the data and training the\nmodel. These tasks might comprise of imputing missing data, correcting erroneous data, resolving"
+    },
+    {
+        "chunk_id": 10,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 8690,
+        "end_index": 9679,
+        "content": "inspection of the data is done to standardize the format before annotating the data and training the\nmodel. These tasks might comprise of imputing missing data, correcting erroneous data, resolving\ninconsistencies in data, \ufb01ltering extraneous data, excluding outliers in the data, and checking the\ndata for quality assurance and correctness.\n2.3\nDATA ANNOTATION AND LABELING\nFor any supervised learning task, the dataset must have accompanying labels to train a model and\nto evaluate performance. Determining the type and granularity of labeling depends on the clinical\nuse case and model learning task. Sometimes, it is possible to leverage passive annotation meth-\nods to extract labels from existing structured data such as parsing ICD-10 medical codes or using\nnatural language processing to retrieve relevant keywords in the patient reports. Otherwise manual\nannotations must be collected.\nOne unique aspect of developing clinical AI models is that annotation cannot typically be done"
+    },
+    {
+        "chunk_id": 11,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 9679,
+        "end_index": 10659,
+        "content": "annotations must be collected.\nOne unique aspect of developing clinical AI models is that annotation cannot typically be done\nwithout considerable domain expertise and training, such as identifying Ventricular Tachycardia in\nElectrocardiograms (ECG) data or localizing Large Vessel Occlusions in CT Angiograms. Exam-\nples of other annotation tasks can include identifying abnormal conditions or events, measuring the\nvolume of anatomical structures, and placing or drawing markers (points, bounding boxes, poly-\ngons) around regions of interest. While being considerate of the clinician\u2019s time, medical image\nannotation is often a resource-intensive bottleneck in the model development cycle.\nWe recommend performing a trial of annotating a small subset of the dataset to check for consis-\ntency and correctness among annotators before annotating the entire dataset. In our experience,\ncapturing excellent annotations will prevent many issues downstream in the development process"
+    },
+    {
+        "chunk_id": 12,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 10659,
+        "end_index": 11612,
+        "content": "tency and correctness among annotators before annotating the entire dataset. In our experience,\ncapturing excellent annotations will prevent many issues downstream in the development process\nas poor annotations lead to a subpar model and dif\ufb01culties in evaluating model performance on the\nground truth. If possible, ambiguous or dif\ufb01cult cases should have multiple annotators to ensure\nconsistent ground truth labels. Trials to measure inter-annotator variability could also be conducted\nas clinicians may interpret the same case differently due to differences in training, expertise, and\nother factors.\n2.4\nMODEL EXPLORATION, DEVELOPMENT, AND TRAINING\nOnce annotations are complete, the labeled dataset should be split into training and validation sets\nfor development of the model and a test set for \ufb01nal evaluation of the model. A baseline model will\n\ufb01rst be developed to gauge the dif\ufb01culty of the problem and give some indication of the performance"
+    },
+    {
+        "chunk_id": 13,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 11612,
+        "end_index": 12551,
+        "content": "for development of the model and a test set for \ufb01nal evaluation of the model. A baseline model will\n\ufb01rst be developed to gauge the dif\ufb01culty of the problem and give some indication of the performance\nimprovement necessary to reach the acceptance criteria. When a baseline has been established, ef-\nforts can be made to improve the model\u2019s performance through changing the model architecture,\nfurther data processing, feature engineering, data augmentation strategies, model ensembling tech-\nniques, and hyper-parameter tuning. In practice, we found that engineering effort is usually well\nspent on developing a robust data processing pipeline and focusing on techniques to increase signal\nto the model, for example registering the skull to a standard atlas and skull-stripping before feeding\ninto an inter-cranial stroke classi\ufb01cation model.\nOther model design decisions are driven by speci\ufb01cations of the clinical use case. In some cases,"
+    },
+    {
+        "chunk_id": 14,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 12551,
+        "end_index": 13466,
+        "content": "into an inter-cranial stroke classi\ufb01cation model.\nOther model design decisions are driven by speci\ufb01cations of the clinical use case. In some cases,\neven if a model does not attain high performance on some metrics, it may still provide clinical utility\n(e.g. clinical work\ufb02ow improvements), while models with higher performance may not actually be\nclinically useful if they are not robust to variations in the data distribution or require extremely\nlong inference times. Also, some types of errors are more egregious than others for the clinical\napplication, and the use case should inform model development priorities, such as setting the ROC\noperating point for the appropriate sensitivity versus speci\ufb01city of a classi\ufb01er.\n3\nAccepted as a workshop paper at AI4AH, ICLR 2020\n2.5\nMODEL TESTING AND CLINICAL EVALUATION\nAfter a model has been trained and meets the performance metrics on the validation set, it can be"
+    },
+    {
+        "chunk_id": 15,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 13466,
+        "end_index": 14453,
+        "content": "3\nAccepted as a workshop paper at AI4AH, ICLR 2020\n2.5\nMODEL TESTING AND CLINICAL EVALUATION\nAfter a model has been trained and meets the performance metrics on the validation set, it can be\nevaluated on the holdout test set as a measure of its ability to generalize on the unseen data (i.e.\ntrue data distribution). Crucially, once a test set has been evaluated, an additional test set must be\ncollected for further development to avoid model bias. If a large discrepancy exists between the\nperformance on the validation set and the test set, it may be due to data leakage (when information\nabout the validation set is passed to the model, which results in an overestimation of the model\u2019s\ngeneralizability) or the test set having a disparate distribution from the validation set, which can\noccur with small samples sizes or when the dataset was not strati\ufb01ed properly. Care must be taken\nto ensure that multiple images or data points for the same patient do not cross between training,"
+    },
+    {
+        "chunk_id": 16,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 14453,
+        "end_index": 15423,
+        "content": "occur with small samples sizes or when the dataset was not strati\ufb01ed properly. Care must be taken\nto ensure that multiple images or data points for the same patient do not cross between training,\nvalidation, and test sets. In cases where the dataset is extremely limited or imbalanced, other data\npartitioning schemes such as k-fold cross validation or strati\ufb01ed sampling can be applied.\nBesides measuring performance metrics, the results of the model\u2019s predictions should also be clin-\nically evaluated for failure modes and clinical mimics. An analysis of the types and frequencies of\nprediction errors may reveal interesting insights about the dataset or labels, such as incorrect ground\ntruth, corrupted data, or hidden biases in the data cohort, that can used to improve the model or\nadjust the clinical use case. Inter-clinician experiments can also be conducted to measure agreement\nbetween the model and the clinician as well as agreement between clinicians.\n2.6"
+    },
+    {
+        "chunk_id": 17,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 15423,
+        "end_index": 16389,
+        "content": "adjust the clinical use case. Inter-clinician experiments can also be conducted to measure agreement\nbetween the model and the clinician as well as agreement between clinicians.\n2.6\nACCEPTANCE, TERMINATION, OR ITERATION\nIf the model does not meet the performance requirements of the clinical use case and development\ncannot continue, the project may terminate at this stage, in which case a post mortem of the life\ncycle can be conducted. If the model meets performance criteria and is accepted into the deploy-\nment cycle, next steps can include additional clinical evaluation such as external off-site validation,\nconducting clinical trials to submit for FDA approval, or gathering application feedback in a clinical\nenvironment. Often, projects continue iterating into previous stages multiple times during the course\nof a project.\n3\nAORTIC ANEURYSM MODEL CASE STUDY\nAortic aneurysms are abnormal enlargements in the wall of the aorta, the major blood vessel that"
+    },
+    {
+        "chunk_id": 18,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 16389,
+        "end_index": 17384,
+        "content": "of a project.\n3\nAORTIC ANEURYSM MODEL CASE STUDY\nAortic aneurysms are abnormal enlargements in the wall of the aorta, the major blood vessel that\nconnects the heart to the rest of the body, which can fatally rupture with a 90% mortality rate if\nleft untreated. Because most aneurysms are asymptomatic until rupturing and identi\ufb01ed inciden-\ntally only 65% of time, there is clinical utility in developing a model to automatically detect aortic\naneurysms on routine chest and abdominal CT examinations Claridge et al. (2017). The clinical\nde\ufb01nition for aortic aneurysms is based on the measurement of the largest diameter of the aorta, so\nthe model has to perform several subtasks (segmentation, measurement, classi\ufb01cation) to produce\nthe needed outputs for clinical application. Our project proceeded through three iterations of the\ndevelopment life cycle detailed below.\nAssess project\nCollect data\nAnnotate\nTrain model\nEvaluate\nCollect more data\nAnnotate data\nTrain model\nEvaluate\nAnnotate data"
+    },
+    {
+        "chunk_id": 19,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 17384,
+        "end_index": 18352,
+        "content": "development life cycle detailed below.\nAssess project\nCollect data\nAnnotate\nTrain model\nEvaluate\nCollect more data\nAnnotate data\nTrain model\nEvaluate\nAnnotate data\nTrain model\nEvaluate\nAccept model\nFigure 2: The aortic aneurysm model life cycle. Colors correspond to development iteration.\n4\nAccepted as a workshop paper at AI4AH, ICLR 2020\n3.1\nFIRST ITERATION\nAfter the clinical use case was de\ufb01ned and project investigators obtained IRB approval, a data acqui-\nsition pull was requested for 1000 contrast and non-contrast CT examinations of the chest, abdomen,\nand pelvis that matched keywords relating to aortic aneurysms in the radiological patient reports. Af-\nter the data was pulled, the raw patient-level data had to be \ufb01ltered to contain only the appropriate\nexamination-level images for each patient as an individual patient often has multiple examinations.\nExams were further \ufb01ltered by acquisition parameters of the imaging scanner, such as slice thickness"
+    },
+    {
+        "chunk_id": 20,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 18352,
+        "end_index": 19305,
+        "content": "Exams were further \ufb01ltered by acquisition parameters of the imaging scanner, such as slice thickness\nand number of slices in an exam. This selection process was only partially automated as examination\nmetadata is not always reliable and often missing or incorrect. Manual inspection for image quality\nand con\ufb01rmation of the presence of aneurysm was also performed by radiologists. Overall, this data\ncuration process took several months before annotations could start.\nFor purposes of visualization and aneurysm measurement, annotations consisted of volumetric 3D\nsegmentation masks of the entire aorta, including the any present aneurysms or pseudo-aneurysms.\nOther labels, including the location and diameter measurement of the aneurysm, were extracted\nfrom the radiological report data. Manually segmenting the aorta is a time consuming but not a very\nclinically challenging task, so an external party of medically trained annotators were used, which"
+    },
+    {
+        "chunk_id": 21,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 19305,
+        "end_index": 20260,
+        "content": "from the radiological report data. Manually segmenting the aorta is a time consuming but not a very\nclinically challenging task, so an external party of medically trained annotators were used, which\nrequired de-identi\ufb01cation of all PHI in the examination data.\nThe primary model architecture was a 3D U-Net-like model, similar to C\u00b8 ic\u00b8ek et al. (2016), to output\na segmentation prediction of the abdominal aorta from abdominal-pelvic CT exams. This predicted\nsegmentation volume was post-processed and an ellipse \ufb01tting algorithm extracted the maximal\ndiameter perpendicular to the centerline axis of the aorta. See our paper Lu et al. (2019) for more\ninformation. The abdominal model achieved good performance on the test set with Dice score of\n0.9, sensitivity of 91%, and speci\ufb01city of 95%. This development iteration required 9 months.\n3.2\nSECOND ITERATION\nSecondary development of a model to detect thoracic aortic aneurysms using a similar approach"
+    },
+    {
+        "chunk_id": 22,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 20260,
+        "end_index": 21189,
+        "content": "3.2\nSECOND ITERATION\nSecondary development of a model to detect thoracic aortic aneurysms using a similar approach\nproved to be much more dif\ufb01cult as the thoracic aorta curves in a cane-like shape through the chest\ncavity while the abdominal aorta is predominately straight. Upon review of the segmentation annota-\ntions of the thoracic aorta, we uncovered quality issues, including missing sections of the segmented\naorta, over-annotation of the aortic root, and under-annotation of the aortic arch. To address these\nannotation quality issues, we collected a new batch of data to annotate with additional training of the\nannotators to ensure a better standard level of quality. This added 3 additional months to the project\ntimeline.\nAfter the new annotations were complete, an expert clinician at our institution checked the anno-\ntations for quality and made minor corrections. Additional engineering effort was devoted to new"
+    },
+    {
+        "chunk_id": 23,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 21189,
+        "end_index": 22103,
+        "content": "After the new annotations were complete, an expert clinician at our institution checked the anno-\ntations for quality and made minor corrections. Additional engineering effort was devoted to new\nmorphological processing and angle correction algorithms to extract the correct diameter measure-\nments from the thoracic aorta segmentations. These diameter measurements would be used to train\nan ensemble classi\ufb01er for a \ufb01nal prediction. The combination of higher quality segmentation labels,\nimproved post-processing transformations, and additional classi\ufb01cation model led to evaluation per-\nformance that exceeded the acceptance criteria with a Dice score of 0.93, sensitivity of 96%, and\nspeci\ufb01city of 95%.\n3.3\nTHIRD ITERATION\nA \ufb01nal iteration cycle was needed to develop a model to delineate the boundary between thorax\nand abdomen during inference time to route the appropriate CT exam to the correct segmentation"
+    },
+    {
+        "chunk_id": 24,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 22103,
+        "end_index": 23054,
+        "content": "A \ufb01nal iteration cycle was needed to develop a model to delineate the boundary between thorax\nand abdomen during inference time to route the appropriate CT exam to the correct segmentation\nmodel. Annotations were reasonably cheap as only a slice-level label denoting the boundary was\nneeded for each exam. A model based off the ResNet architecture from He et al. (2016) was trained\nto regress slice-level and output a scalar value predicting the distance from the boundary. Then,\nportions of the image containing the thoracic aorta would be sent the thoracic model while sections\nof the abdominal aorta would be sent to the abdominal model for prediction.\nAfter clinical evaluation and alpha testing of 1000 additional retrospective cases, all models and\ntheir dependencies were packaged to be integrated into existing clinical work\ufb02ow software. With\nintegration complete, a beta test in a clinical environment was scheduled before wider deployment.\n5"
+    },
+    {
+        "chunk_id": 25,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 23054,
+        "end_index": 23993,
+        "content": "their dependencies were packaged to be integrated into existing clinical work\ufb02ow software. With\nintegration complete, a beta test in a clinical environment was scheduled before wider deployment.\n5\nAccepted as a workshop paper at AI4AH, ICLR 2020\nREFERENCES\nMauro Annarumma, Samuel J. Withey, Robert J. Bakewell, Emanuele Pesce, Vicky Goh, and Gio-\nvanni Montana. Automated triaging of adult chest radiographs with deep arti\ufb01cial neural net-\nworks. Radiology, 291, 2019.\nJan K Chorowski, Dzmitry Bahdanau, Dmitriy Serdyuk, Kyunghyun Cho, and Yoshua Bengio.\nAttention-based models for speech recognition.\nIn C. Cortes, N. D. Lawrence, D. D. Lee,\nM. Sugiyama, and R. Garnett (eds.), Advances in Neural Information Processing Systems 28,\npp. 577\u2013585. 2015.\n\u00a8Ozg\u00a8un C\u00b8 ic\u00b8ek, Ahmed Abdulkadir, Soeren S. Lienkamp, Thomas Brox, and Olaf Ronneberger. 3d\nu-net: Learning dense volumetric segmentation from sparse annotation. In Sebastien Ourselin,"
+    },
+    {
+        "chunk_id": 26,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 23993,
+        "end_index": 24927,
+        "content": "\u00a8Ozg\u00a8un C\u00b8 ic\u00b8ek, Ahmed Abdulkadir, Soeren S. Lienkamp, Thomas Brox, and Olaf Ronneberger. 3d\nu-net: Learning dense volumetric segmentation from sparse annotation. In Sebastien Ourselin,\nLeo Joskowicz, Mert R. Sabuncu, Gozde Unal, and William Wells (eds.), Medical Image Com-\nputing and Computer-Assisted Intervention \u2013 MICCAI 2016, pp. 424\u2013432, Cham, 2016. Springer\nInternational Publishing. ISBN 978-3-319-46723-8.\nRachel Claridge, Sam Arnold, Neil Morrison, and Andre M. van Rij. Measuring abdominal aor-\ntic diameters in routine abdominal computed tomography scans and implications for abdominal\naortic aneurysm screening. Vascular Surgery, 65:16371642, 2017.\nDibyendu Dana, Satishkumar V. Gadhiya, Luce G. St. Surin, David Li, Farha Naaz, Quaisar Ali,\nLatha Paka, Michael A. Yamin, Mahesh Narayan, Itzhak D. Goldberg, and Prakash Narayan.\nDeep learning in drug discovery and medicine; scratching the surface. Molecules, 23, 2018."
+    },
+    {
+        "chunk_id": 27,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 24927,
+        "end_index": 25874,
+        "content": "Latha Paka, Michael A. Yamin, Mahesh Narayan, Itzhak D. Goldberg, and Prakash Narayan.\nDeep learning in drug discovery and medicine; scratching the surface. Molecules, 23, 2018.\nJacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. BERT: Pre-training of deep\nbidirectional transformers for language understanding. In Proceedings of the 2019 Conference of\nthe North American Chapter of the Association for Computational Linguistics: Human Language\nTechnologies, Volume 1 (Long and Short Papers), pp. 4171\u20134186, June 2019.\nAndre Esteva, Alexandre Robicquet, Bharath Ramsundar, Volodymyr Kuleshov, Mark DePristo,\nKatherine Chou, Claire Cui, Greg Corrado, Sebastian Thrun, and Jeff Dean. A guide to deep\nlearning in healthcare. Nature Medicine, 25:24\u201329, 2019.\nJeffrey De Fauw, Joseph R. Ledsam, Bernardino Romera-Paredes, Stanislav Nikolov, Nenad Toma-\nsev, Sam Blackwell, Harry Askham, Xavier Glorot, Brendan O\u2019Donoghue, Daniel Visentin,"
+    },
+    {
+        "chunk_id": 28,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 25874,
+        "end_index": 26860,
+        "content": "Jeffrey De Fauw, Joseph R. Ledsam, Bernardino Romera-Paredes, Stanislav Nikolov, Nenad Toma-\nsev, Sam Blackwell, Harry Askham, Xavier Glorot, Brendan O\u2019Donoghue, Daniel Visentin,\nGeorge van den Driessche, Balaji Lakshminarayanan, Clemens Meyer, Faith Mackinder, Simon\nBouton, Kareem Ayoub, Reena Chopra, Dominic King, Alan Karthikesalingam, Can O. Hughes,\nRosalind Raine, Julian Hughes, Dawn A. Sim, Catherine Egan, Adnan Tufail, Hugh Montgomery,\nDemis Hassabis, Geraint Rees, Trevor Back, Peng T. Khaw, Mustafa Suleyman, Julien Cornebise,\nPearse A. Keane, and Olaf Ronneberger. Clinically applicable deep learning for diagnosis and re-\nferral in retinal disease. Nature Medicine, 24:1342\u20131350, 2018.\nK. He, X. Zhang, S. Ren, and J. Sun. Deep residual learning for image recognition. In 2016 IEEE\nConference on Computer Vision and Pattern Recognition (CVPR), pp. 770\u2013778, June 2016.\nHeather Heath\ufb01eld. The rise and \u2019fall\u2019 of expert systems in medicine. Expert Systems, 16:183\u2013188,\n1999."
+    },
+    {
+        "chunk_id": 29,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 26860,
+        "end_index": 27792,
+        "content": "Conference on Computer Vision and Pattern Recognition (CVPR), pp. 770\u2013778, June 2016.\nHeather Heath\ufb01eld. The rise and \u2019fall\u2019 of expert systems in medicine. Expert Systems, 16:183\u2013188,\n1999.\nAlex Krizhevsky, Ilya Sutskever, and Geoffrey E. Hinton. Imagenet classi\ufb01cation with deep convo-\nlutional neural networks. In Advances in Neural Information Processing Systems 25, pp. 1097\u2013\n1105. 2012.\nJen-Tang Lu, Rupert Brooks, Stefan Hahn, Jin Chen, Varun Buch, Gopal Kotecha, Katherine P.\nAndriole, Brian Ghoshhajra, Joel Pinto, Paul Vozila, Mark Michalski, and Neil A. Tenenholtz.\nDeepaaa: Clinically applicable and generalizable detection of abdominal aortic aneurysm using\ndeep learning. In Medical Image Computing and Computer Assisted Intervention \u2013 MICCAI 2019,\npp. 723\u2013731. Springer International Publishing, 2019. ISBN 978-3-030-32245-8.\nEvgeny Putin, Polina Mamoshina, Alexander Aliper, Mikhail Korzinkin, Alexey Moskalev, Alexey"
+    },
+    {
+        "chunk_id": 30,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 27792,
+        "end_index": 28767,
+        "content": "pp. 723\u2013731. Springer International Publishing, 2019. ISBN 978-3-030-32245-8.\nEvgeny Putin, Polina Mamoshina, Alexander Aliper, Mikhail Korzinkin, Alexey Moskalev, Alexey\nKolosov, Alexander Ostrovskiy, Charles Cantor, Jan Vijg, and Alex Zhavoronkov. Deep biomark-\ners of human aging: Application of deep neural networks to biomarker development. Aging, 8:\n1021\u20131030, 2016.\n6\nAccepted as a workshop paper at AI4AH, ICLR 2020\nEliza Strickland. Ibm watson: heal thyself: How ibm overpromised and underdelivered on ai health\ncare. IEEE Spectrum, 56:24\u201331, 2019.\nA\nTHE DEPLOYMENT CYCLE\nWhile we focused mainly on the development cycle, we brie\ufb02y discuss the deployment cycle. Once a\nmodel has been through evaluation and met the acceptance criteria, the model must be packaged and\ningested in an inference system to be integrated into the clinician work\ufb02ow. This process can be quite\ninvolved and domain speci\ufb01c depending on the inference platform and integration requirements for"
+    },
+    {
+        "chunk_id": 31,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 28767,
+        "end_index": 29700,
+        "content": "ingested in an inference system to be integrated into the clinician work\ufb02ow. This process can be quite\ninvolved and domain speci\ufb01c depending on the inference platform and integration requirements for\nexisting point-of-care software and database systems, often requiring coordination between several\nexternal vendors and regulatory committees.\nFor some of our projects, the next phase after model development is shadow inference, where the\nmodel runs inference on live data streams but does not impact clinical decision making. Shadow\ninference is performed to test system integration and gather feedback on the clinical application.\nOngoing efforts are made to interface with clinicians to develop standards for deployment of clinical\nAI applications. Other important considerations of model deployment include continual monitoring\nfor different failure modes and distribution shifts in non-stationary data. As clinical decisions are"
+    },
+    {
+        "chunk_id": 32,
+        "document_id": "5d743a0b-66b3-495e-9abb-bd30a594c3ab",
+        "document_name": "20260822_152033_test1.pdf",
+        "start_index": 29700,
+        "end_index": 30196,
+        "content": "AI applications. Other important considerations of model deployment include continual monitoring\nfor different failure modes and distribution shifts in non-stationary data. As clinical decisions are\nin\ufb02uence by models predictions, models will need to be continuously evaluated, recalibrated, and\nretrained on new data as the population changes over time. Other interesting work around model de-\nployment includes federated learning, clinician-machine interfaces, and active learning techniques.\n7"
+    }
+]
