@@ -154,3 +154,19 @@
 - Ask custom comparison questions.
 - Retrieve evidence independently from both papers.
 - Generate AI-powered, evidence-grounded comparisons.
+
+### 🔍 Retrieval Debugger
+
+- Interactive semantic retrieval testing
+- Research paper selection
+- Adjustable Top K retrieval
+- Adjustable similarity threshold
+- Query embedding inspection
+- Total vector count visibility
+- Retrieved result count
+- Ranked chunk results
+- Similarity score visualization
+- Chunk ID and character range inspection
+- Retrieved content preview
+- Irrelevant query validation
+- Threshold-based retrieval testing
