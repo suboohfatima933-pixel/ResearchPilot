@@ -266,3 +266,23 @@
 - Presentation Generator workflow
 - Clear explanation of the grounded AI approach
 - Architecture-focused workflow inspection
+
+### ⚙️ Settings
+
+- Current AI configuration overview
+- LLM provider visibility
+- Active LLM model information
+- Embedding model information
+- Embedding dimension visibility
+- Document processing configuration
+- Supported document format information
+- Maximum upload size visibility
+- FAISS vector store information
+- Cosine similarity configuration
+- Document-scoped vector store visibility
+- PowerPoint export configuration
+- Research paper storage count
+- Vector store count
+- Generated presentation count
+- Real-time storage overview
+- Grounded AI system information
